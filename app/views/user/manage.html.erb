@@ -1,0 +1,9 @@
+<% if  current_user.right == 'administrator' %>
+<h3><%= link_to 'Manage user rights', manage_users_path %> </h3>
+<h3><%= link_to 'Manage content', manage_admin_content_path %> </h3>
+<h3><%= link_to 'Add advertises', new_advertise_path %> </h3>
+<h3><%= link_to 'Add place types', new_place_type_path %> </h3>
+<h3><%= link_to 'Add news', new_news_path %> </h3>
+<% end %>
+<h3><%= link_to 'Add places', new_place_path %> </h3>
+<h3><%= link_to 'Add events', new_event_path %> </h3>

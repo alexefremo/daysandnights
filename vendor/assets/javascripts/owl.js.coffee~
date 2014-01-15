@@ -1,0 +1,1053 @@
+if typeof Object.create isnt "function"
+  Object.create = (obj) ->
+    F = ->
+    F:: = obj
+    new F()
+    alert "a"
+(($, window, document) ->
+  Carousel =
+    init: (options, el) ->
+      base = this
+      base.$elem = $(el)
+      base.options = $.extend({}, $.fn.owlCarousel.options, base.$elem.data(), options)
+      base.userOptions = options
+      base.loadContent()
+
+    loadContent: ->
+      getData = (data) ->
+        i = undefined
+        content = ""
+        if typeof base.options.jsonSuccess is "function"
+          base.options.jsonSuccess.apply this, [data]
+        else
+          for i of data.owl
+            content += data.owl[i].item  if data.owl.hasOwnProperty(i)
+          base.$elem.html content
+        base.logIn()
+      base = this
+      url = undefined
+      base.options.beforeInit.apply this, [base.$elem]  if typeof base.options.beforeInit is "function"
+      if typeof base.options.jsonPath is "string"
+        url = base.options.jsonPath
+        $.getJSON url, getData
+      else
+        base.logIn()
+
+    logIn: ->
+      base = this
+      base.$elem.data("owl-originalStyles", base.$elem.attr("style")).data "owl-originalClasses", base.$elem.attr("class")
+      base.$elem.css opacity: 0
+      base.orignalItems = base.options.items
+      base.checkBrowser()
+      base.wrapperWidth = 0
+      base.checkVisible = null
+      base.setVars()
+
+    setVars: ->
+      base = this
+      return false  if base.$elem.children().length is 0
+      base.baseClass()
+      base.eventTypes()
+      base.$userItems = base.$elem.children()
+      base.itemsAmount = base.$userItems.length
+      base.wrapItems()
+      base.$owlItems = base.$elem.find(".owl-item")
+      base.$owlWrapper = base.$elem.find(".owl-wrapper")
+      base.playDirection = "next"
+      base.prevItem = 0
+      base.prevArr = [0]
+      base.currentItem = 0
+      base.customEvents()
+      base.onStartup()
+
+    onStartup: ->
+      base = this
+      base.updateItems()
+      base.calculateAll()
+      base.buildControls()
+      base.updateControls()
+      base.response()
+      base.moveEvents()
+      base.stopOnHover()
+      base.owlStatus()
+      base.transitionTypes base.options.transitionStyle  if base.options.transitionStyle isnt false
+      base.options.autoPlay = 5000  if base.options.autoPlay is true
+      base.play()
+      base.$elem.find(".owl-wrapper").css "display", "block"
+      unless base.$elem.is(":visible")
+        base.watchVisibility()
+      else
+        base.$elem.css "opacity", 1
+      base.onstartup = false
+      base.eachMoveUpdate()
+      base.options.afterInit.apply this, [base.$elem]  if typeof base.options.afterInit is "function"
+
+    eachMoveUpdate: ->
+      base = this
+      base.lazyLoad()  if base.options.lazyLoad is true
+      base.autoHeight()  if base.options.autoHeight is true
+      base.onVisibleItems()
+      base.options.afterAction.apply this, [base.$elem]  if typeof base.options.afterAction is "function"
+
+    updateVars: ->
+      base = this
+      base.options.beforeUpdate.apply this, [base.$elem]  if typeof base.options.beforeUpdate is "function"
+      base.watchVisibility()
+      base.updateItems()
+      base.calculateAll()
+      base.updatePosition()
+      base.updateControls()
+      base.eachMoveUpdate()
+      base.options.afterUpdate.apply this, [base.$elem]  if typeof base.options.afterUpdate is "function"
+
+    reload: ->
+      base = this
+      window.setTimeout (->
+        base.updateVars()
+      ), 0
+
+    watchVisibility: ->
+      base = this
+      if base.$elem.is(":visible") is false
+        base.$elem.css opacity: 0
+        window.clearInterval base.autoPlayInterval
+        window.clearInterval base.checkVisible
+      else
+        return false
+      base.checkVisible = window.setInterval(->
+        if base.$elem.is(":visible")
+          base.reload()
+          base.$elem.animate
+            opacity: 1
+          , 200
+          window.clearInterval base.checkVisible
+      , 500)
+
+    wrapItems: ->
+      base = this
+      base.$userItems.wrapAll("<div class=\"owl-wrapper\">").wrap "<div class=\"owl-item\"></div>"
+      base.$elem.find(".owl-wrapper").wrap "<div class=\"owl-wrapper-outer\">"
+      base.wrapperOuter = base.$elem.find(".owl-wrapper-outer")
+      base.$elem.css "display", "block"
+
+    baseClass: ->
+      base = this
+      hasBaseClass = base.$elem.hasClass(base.options.baseClass)
+      hasThemeClass = base.$elem.hasClass(base.options.theme)
+      base.$elem.addClass base.options.baseClass  unless hasBaseClass
+      base.$elem.addClass base.options.theme  unless hasThemeClass
+
+    updateItems: ->
+      base = this
+      width = undefined
+      i = undefined
+      return false  if base.options.responsive is false
+      if base.options.singleItem is true
+        base.options.items = base.orignalItems = 1
+        base.options.itemsCustom = false
+        base.options.itemsDesktop = false
+        base.options.itemsDesktopSmall = false
+        base.options.itemsTablet = false
+        base.options.itemsTabletSmall = false
+        base.options.itemsMobile = false
+        return false
+      width = $(base.options.responsiveBaseWidth).width()
+      base.options.items = base.orignalItems  if width > (base.options.itemsDesktop[0] or base.orignalItems)
+      if base.options.itemsCustom isnt false
+        
+        #Reorder array by screen size
+        base.options.itemsCustom.sort (a, b) ->
+          a[0] - b[0]
+
+        i = 0
+        while i < base.options.itemsCustom.length
+          base.options.items = base.options.itemsCustom[i][1]  if base.options.itemsCustom[i][0] <= width
+          i += 1
+      else
+        base.options.items = base.options.itemsDesktop[1]  if width <= base.options.itemsDesktop[0] and base.options.itemsDesktop isnt false
+        base.options.items = base.options.itemsDesktopSmall[1]  if width <= base.options.itemsDesktopSmall[0] and base.options.itemsDesktopSmall isnt false
+        base.options.items = base.options.itemsTablet[1]  if width <= base.options.itemsTablet[0] and base.options.itemsTablet isnt false
+        base.options.items = base.options.itemsTabletSmall[1]  if width <= base.options.itemsTabletSmall[0] and base.options.itemsTabletSmall isnt false
+        base.options.items = base.options.itemsMobile[1]  if width <= base.options.itemsMobile[0] and base.options.itemsMobile isnt false
+      
+      #if number of items is less than declared
+      base.options.items = base.itemsAmount  if base.options.items > base.itemsAmount and base.options.itemsScaleUp is true
+
+    response: ->
+      base = this
+      smallDelay = undefined
+      lastWindowWidth = undefined
+      return false  if base.options.responsive isnt true
+      lastWindowWidth = $(window).width()
+      base.resizer = ->
+        if $(window).width() isnt lastWindowWidth
+          window.clearInterval base.autoPlayInterval  if base.options.autoPlay isnt false
+          window.clearTimeout smallDelay
+          smallDelay = window.setTimeout(->
+            lastWindowWidth = $(window).width()
+            base.updateVars()
+          , base.options.responsiveRefreshRate)
+
+      $(window).resize base.resizer
+
+    updatePosition: ->
+      base = this
+      base.jumpTo base.currentItem
+      base.checkAp()  if base.options.autoPlay isnt false
+
+    appendItemsSizes: ->
+      base = this
+      roundPages = 0
+      lastItem = base.itemsAmount - base.options.items
+      base.$owlItems.each (index) ->
+        $this = $(this)
+        $this.css(width: base.itemWidth).data "owl-item", Number(index)
+        roundPages += 1  unless index > lastItem  if index % base.options.items is 0 or index is lastItem
+        $this.data "owl-roundPages", roundPages
+
+
+    appendWrapperSizes: ->
+      base = this
+      width = base.$owlItems.length * base.itemWidth
+      base.$owlWrapper.css
+        width: width * 2
+        left: 0
+
+      base.appendItemsSizes()
+
+    calculateAll: ->
+      base = this
+      base.calculateWidth()
+      base.appendWrapperSizes()
+      base.loops()
+      base.max()
+
+    calculateWidth: ->
+      base = this
+      base.itemWidth = Math.round(base.$elem.width() / base.options.items)
+
+    max: ->
+      base = this
+      maximum = ((base.itemsAmount * base.itemWidth) - base.options.items * base.itemWidth) * -1
+      if base.options.items > base.itemsAmount
+        base.maximumItem = 0
+        maximum = 0
+        base.maximumPixels = 0
+      else
+        base.maximumItem = base.itemsAmount - base.options.items
+        base.maximumPixels = maximum
+      maximum
+
+    min: ->
+      0
+
+    loops: ->
+      base = this
+      prev = 0
+      elWidth = 0
+      i = undefined
+      item = undefined
+      roundPageNum = undefined
+      base.positionsInArray = [0]
+      base.pagesInArray = []
+      i = 0
+      while i < base.itemsAmount
+        elWidth += base.itemWidth
+        base.positionsInArray.push -elWidth
+        if base.options.scrollPerPage is true
+          item = $(base.$owlItems[i])
+          roundPageNum = item.data("owl-roundPages")
+          if roundPageNum isnt prev
+            base.pagesInArray[prev] = base.positionsInArray[i]
+            prev = roundPageNum
+        i += 1
+
+    buildControls: ->
+      base = this
+      base.owlControls = $("<div class=\"owl-controls\"/>").toggleClass("clickable", not base.browser.isTouch).appendTo(base.$elem)  if base.options.navigation is true or base.options.pagination is true
+      base.buildPagination()  if base.options.pagination is true
+      base.buildButtons()  if base.options.navigation is true
+
+    buildButtons: ->
+      base = this
+      buttonsWrapper = $("<div class=\"owl-buttons\"/>")
+      base.owlControls.append buttonsWrapper
+      base.buttonPrev = $("<div/>",
+        class: "owl-prev"
+        html: base.options.navigationText[0] or ""
+      )
+      base.buttonNext = $("<div/>",
+        class: "owl-next"
+        html: base.options.navigationText[1] or ""
+      )
+      buttonsWrapper.append(base.buttonPrev).append base.buttonNext
+      buttonsWrapper.on "touchstart.owlControls mousedown.owlControls", "div[class^=\"owl\"]", (event) ->
+        event.preventDefault()
+
+      buttonsWrapper.on "touchend.owlControls mouseup.owlControls", "div[class^=\"owl\"]", (event) ->
+        event.preventDefault()
+        if $(this).hasClass("owl-next")
+          base.next()
+        else
+          base.prev()
+
+
+    buildPagination: ->
+      base = this
+      base.paginationWrapper = $("<div class=\"owl-pagination\"/>")
+      base.owlControls.append base.paginationWrapper
+      base.paginationWrapper.on "touchend.owlControls mouseup.owlControls", ".owl-page", (event) ->
+        event.preventDefault()
+        base.goTo Number($(this).data("owl-page")), true  if Number($(this).data("owl-page")) isnt base.currentItem
+
+
+    updatePagination: ->
+      base = this
+      counter = undefined
+      lastPage = undefined
+      lastItem = undefined
+      i = undefined
+      paginationButton = undefined
+      paginationButtonInner = undefined
+      return false  if base.options.pagination is false
+      base.paginationWrapper.html ""
+      counter = 0
+      lastPage = base.itemsAmount - base.itemsAmount % base.options.items
+      i = 0
+      while i < base.itemsAmount
+        if i % base.options.items is 0
+          counter += 1
+          lastItem = base.itemsAmount - base.options.items  if lastPage is i
+          paginationButton = $("<div/>",
+            class: "owl-page"
+          )
+          paginationButtonInner = $("<span></span>",
+            text: (if base.options.paginationNumbers is true then counter else "")
+            class: (if base.options.paginationNumbers is true then "owl-numbers" else "")
+          )
+          paginationButton.append paginationButtonInner
+          paginationButton.data "owl-page", (if lastPage is i then lastItem else i)
+          paginationButton.data "owl-roundPages", counter
+          base.paginationWrapper.append paginationButton
+        i += 1
+      base.checkPagination()
+
+    checkPagination: ->
+      base = this
+      return false  if base.options.pagination is false
+      base.paginationWrapper.find(".owl-page").each ->
+        if $(this).data("owl-roundPages") is $(base.$owlItems[base.currentItem]).data("owl-roundPages")
+          base.paginationWrapper.find(".owl-page").removeClass "active"
+          $(this).addClass "active"
+
+
+    checkNavigation: ->
+      base = this
+      return false  if base.options.navigation is false
+      if base.options.rewindNav is false
+        if base.currentItem is 0 and base.maximumItem is 0
+          base.buttonPrev.addClass "disabled"
+          base.buttonNext.addClass "disabled"
+        else if base.currentItem is 0 and base.maximumItem isnt 0
+          base.buttonPrev.addClass "disabled"
+          base.buttonNext.removeClass "disabled"
+        else if base.currentItem is base.maximumItem
+          base.buttonPrev.removeClass "disabled"
+          base.buttonNext.addClass "disabled"
+        else if base.currentItem isnt 0 and base.currentItem isnt base.maximumItem
+          base.buttonPrev.removeClass "disabled"
+          base.buttonNext.removeClass "disabled"
+
+    updateControls: ->
+      base = this
+      base.updatePagination()
+      base.checkNavigation()
+      if base.owlControls
+        if base.options.items >= base.itemsAmount
+          base.owlControls.hide()
+        else
+          base.owlControls.show()
+
+    destroyControls: ->
+      base = this
+      base.owlControls.remove()  if base.owlControls
+
+    next: (speed) ->
+      base = this
+      return false  if base.isTransition
+      base.currentItem += (if base.options.scrollPerPage is true then base.options.items else 1)
+      if base.currentItem > base.maximumItem + ((if base.options.scrollPerPage is true then (base.options.items - 1) else 0))
+        if base.options.rewindNav is true
+          base.currentItem = 0
+          speed = "rewind"
+        else
+          base.currentItem = base.maximumItem
+          return false
+      base.goTo base.currentItem, speed
+
+    prev: (speed) ->
+      base = this
+      return false  if base.isTransition
+      if base.options.scrollPerPage is true and base.currentItem > 0 and base.currentItem < base.options.items
+        base.currentItem = 0
+      else
+        base.currentItem -= (if base.options.scrollPerPage is true then base.options.items else 1)
+      if base.currentItem < 0
+        if base.options.rewindNav is true
+          base.currentItem = base.maximumItem
+          speed = "rewind"
+        else
+          base.currentItem = 0
+          return false
+      base.goTo base.currentItem, speed
+
+    goTo: (position, speed, drag) ->
+      base = this
+      goToPixel = undefined
+      return false  if base.isTransition
+      base.options.beforeMove.apply this, [base.$elem]  if typeof base.options.beforeMove is "function"
+      if position >= base.maximumItem
+        position = base.maximumItem
+      else position = 0  if position <= 0
+      base.currentItem = base.owl.currentItem = position
+      if base.options.transitionStyle isnt false and drag isnt "drag" and base.options.items is 1 and base.browser.support3d is true
+        base.swapSpeed 0
+        if base.browser.support3d is true
+          base.transition3d base.positionsInArray[position]
+        else
+          base.css2slide base.positionsInArray[position], 1
+        base.afterGo()
+        base.singleItemTransition()
+        return false
+      goToPixel = base.positionsInArray[position]
+      if base.browser.support3d is true
+        base.isCss3Finish = false
+        if speed is true
+          base.swapSpeed "paginationSpeed"
+          window.setTimeout (->
+            base.isCss3Finish = true
+          ), base.options.paginationSpeed
+        else if speed is "rewind"
+          base.swapSpeed base.options.rewindSpeed
+          window.setTimeout (->
+            base.isCss3Finish = true
+          ), base.options.rewindSpeed
+        else
+          base.swapSpeed "slideSpeed"
+          window.setTimeout (->
+            base.isCss3Finish = true
+          ), base.options.slideSpeed
+        base.transition3d goToPixel
+      else
+        if speed is true
+          base.css2slide goToPixel, base.options.paginationSpeed
+        else if speed is "rewind"
+          base.css2slide goToPixel, base.options.rewindSpeed
+        else
+          base.css2slide goToPixel, base.options.slideSpeed
+      base.afterGo()
+
+    jumpTo: (position) ->
+      base = this
+      base.options.beforeMove.apply this, [base.$elem]  if typeof base.options.beforeMove is "function"
+      if position >= base.maximumItem or position is -1
+        position = base.maximumItem
+      else position = 0  if position <= 0
+      base.swapSpeed 0
+      if base.browser.support3d is true
+        base.transition3d base.positionsInArray[position]
+      else
+        base.css2slide base.positionsInArray[position], 1
+      base.currentItem = base.owl.currentItem = position
+      base.afterGo()
+
+    afterGo: ->
+      base = this
+      base.prevArr.push base.currentItem
+      base.prevItem = base.owl.prevItem = base.prevArr[base.prevArr.length - 2]
+      base.prevArr.shift 0
+      if base.prevItem isnt base.currentItem
+        base.checkPagination()
+        base.checkNavigation()
+        base.eachMoveUpdate()
+        base.checkAp()  if base.options.autoPlay isnt false
+      base.options.afterMove.apply this, [base.$elem]  if typeof base.options.afterMove is "function" and base.prevItem isnt base.currentItem
+
+    stop: ->
+      base = this
+      base.apStatus = "stop"
+      window.clearInterval base.autoPlayInterval
+
+    checkAp: ->
+      base = this
+      base.play()  if base.apStatus isnt "stop"
+
+    play: ->
+      base = this
+      base.apStatus = "play"
+      return false  if base.options.autoPlay is false
+      window.clearInterval base.autoPlayInterval
+      base.autoPlayInterval = window.setInterval(->
+        base.next true
+      , base.options.autoPlay)
+
+    swapSpeed: (action) ->
+      base = this
+      if action is "slideSpeed"
+        base.$owlWrapper.css base.addCssSpeed(base.options.slideSpeed)
+      else if action is "paginationSpeed"
+        base.$owlWrapper.css base.addCssSpeed(base.options.paginationSpeed)
+      else base.$owlWrapper.css base.addCssSpeed(action)  if typeof action isnt "string"
+
+    addCssSpeed: (speed) ->
+      "-webkit-transition": "all " + speed + "ms ease"
+      "-moz-transition": "all " + speed + "ms ease"
+      "-o-transition": "all " + speed + "ms ease"
+      transition: "all " + speed + "ms ease"
+
+    removeTransition: ->
+      "-webkit-transition": ""
+      "-moz-transition": ""
+      "-o-transition": ""
+      transition: ""
+
+    doTranslate: (pixels) ->
+      "-webkit-transform": "translate3d(" + pixels + "px, 0px, 0px)"
+      "-moz-transform": "translate3d(" + pixels + "px, 0px, 0px)"
+      "-o-transform": "translate3d(" + pixels + "px, 0px, 0px)"
+      "-ms-transform": "translate3d(" + pixels + "px, 0px, 0px)"
+      transform: "translate3d(" + pixels + "px, 0px,0px)"
+
+    transition3d: (value) ->
+      base = this
+      base.$owlWrapper.css base.doTranslate(value)
+
+    css2move: (value) ->
+      base = this
+      base.$owlWrapper.css left: value
+
+    css2slide: (value, speed) ->
+      base = this
+      base.isCssFinish = false
+      base.$owlWrapper.stop(true, true).animate
+        left: value
+      ,
+        duration: speed or base.options.slideSpeed
+        complete: ->
+          base.isCssFinish = true
+
+
+    checkBrowser: ->
+      base = this
+      translate3D = "translate3d(0px, 0px, 0px)"
+      tempElem = document.createElement("div")
+      regex = undefined
+      asSupport = undefined
+      support3d = undefined
+      isTouch = undefined
+      tempElem.style.cssText = "  -moz-transform:" + translate3D + "; -ms-transform:" + translate3D + "; -o-transform:" + translate3D + "; -webkit-transform:" + translate3D + "; transform:" + translate3D
+      regex = /translate3d\(0px, 0px, 0px\)/g
+      asSupport = tempElem.style.cssText.match(regex)
+      support3d = (asSupport isnt null and asSupport.length is 1)
+      isTouch = "ontouchstart" of window or window.navigator.msMaxTouchPoints
+      base.browser =
+        support3d: support3d
+        isTouch: isTouch
+
+    moveEvents: ->
+      base = this
+      if base.options.mouseDrag isnt false or base.options.touchDrag isnt false
+        base.gestures()
+        base.disabledEvents()
+
+    eventTypes: ->
+      base = this
+      types = ["s", "e", "x"]
+      base.ev_types = {}
+      if base.options.mouseDrag is true and base.options.touchDrag is true
+        types = ["touchstart.owl mousedown.owl", "touchmove.owl mousemove.owl", "touchend.owl touchcancel.owl mouseup.owl"]
+      else if base.options.mouseDrag is false and base.options.touchDrag is true
+        types = ["touchstart.owl", "touchmove.owl", "touchend.owl touchcancel.owl"]
+      else types = ["mousedown.owl", "mousemove.owl", "mouseup.owl"]  if base.options.mouseDrag is true and base.options.touchDrag is false
+      base.ev_types.start = types[0]
+      base.ev_types.move = types[1]
+      base.ev_types.end = types[2]
+
+    disabledEvents: ->
+      base = this
+      base.$elem.on "dragstart.owl", (event) ->
+        event.preventDefault()
+
+      base.$elem.on "mousedown.disableTextSelect", (e) ->
+        $(e.target).is "input, textarea, select, option"
+
+
+    gestures: ->
+      
+      #jslint unparam: true
+      getTouches = (event) ->
+        if event.touches isnt `undefined`
+          return (
+            x: event.touches[0].pageX
+            y: event.touches[0].pageY
+          )
+        if event.touches is `undefined`
+          if event.pageX isnt `undefined`
+            return (
+              x: event.pageX
+              y: event.pageY
+            )
+          if event.pageX is `undefined`
+            x: event.clientX
+            y: event.clientY
+      swapEvents = (type) ->
+        if type is "on"
+          $(document).on base.ev_types.move, dragMove
+          $(document).on base.ev_types.end, dragEnd
+        else if type is "off"
+          $(document).off base.ev_types.move
+          $(document).off base.ev_types.end
+      dragStart = (event) ->
+        ev = event.originalEvent or event or window.event
+        position = undefined
+        return false  if ev.which is 3
+        return  if base.itemsAmount <= base.options.items
+        return false  if base.isCssFinish is false and not base.options.dragBeforeAnimFinish
+        return false  if base.isCss3Finish is false and not base.options.dragBeforeAnimFinish
+        window.clearInterval base.autoPlayInterval  if base.options.autoPlay isnt false
+        base.$owlWrapper.addClass "grabbing"  if base.browser.isTouch isnt true and not base.$owlWrapper.hasClass("grabbing")
+        base.newPosX = 0
+        base.newRelativeX = 0
+        $(this).css base.removeTransition()
+        position = $(this).position()
+        locals.relativePos = position.left
+        locals.offsetX = getTouches(ev).x - position.left
+        locals.offsetY = getTouches(ev).y - position.top
+        swapEvents "on"
+        locals.sliding = false
+        locals.targetElement = ev.target or ev.srcElement
+      dragMove = (event) ->
+        ev = event.originalEvent or event or window.event
+        minSwipe = undefined
+        maxSwipe = undefined
+        base.newPosX = getTouches(ev).x - locals.offsetX
+        base.newPosY = getTouches(ev).y - locals.offsetY
+        base.newRelativeX = base.newPosX - locals.relativePos
+        if typeof base.options.startDragging is "function" and locals.dragging isnt true and base.newRelativeX isnt 0
+          locals.dragging = true
+          base.options.startDragging.apply base, [base.$elem]
+        if (base.newRelativeX > 8 or base.newRelativeX < -8) and (base.browser.isTouch is true)
+          if ev.preventDefault isnt `undefined`
+            ev.preventDefault()
+          else
+            ev.returnValue = false
+          locals.sliding = true
+        $(document).off "touchmove.owl"  if (base.newPosY > 10 or base.newPosY < -10) and locals.sliding is false
+        minSwipe = ->
+          base.newRelativeX / 5
+
+        maxSwipe = ->
+          base.maximumPixels + base.newRelativeX / 5
+
+        base.newPosX = Math.max(Math.min(base.newPosX, minSwipe()), maxSwipe())
+        if base.browser.support3d is true
+          base.transition3d base.newPosX
+        else
+          base.css2move base.newPosX
+      dragEnd = (event) ->
+        ev = event.originalEvent or event or window.event
+        newPosition = undefined
+        handlers = undefined
+        owlStopEvent = undefined
+        ev.target = ev.target or ev.srcElement
+        locals.dragging = false
+        base.$owlWrapper.removeClass "grabbing"  if base.browser.isTouch isnt true
+        if base.newRelativeX < 0
+          base.dragDirection = base.owl.dragDirection = "left"
+        else
+          base.dragDirection = base.owl.dragDirection = "right"
+        if base.newRelativeX isnt 0
+          newPosition = base.getNewPosition()
+          base.goTo newPosition, false, "drag"
+          if locals.targetElement is ev.target and base.browser.isTouch isnt true
+            $(ev.target).on "click.disable", (ev) ->
+              ev.stopImmediatePropagation()
+              ev.stopPropagation()
+              ev.preventDefault()
+              $(ev.target).off "click.disable"
+
+            handlers = $._data(ev.target, "events").click
+            owlStopEvent = handlers.pop()
+            handlers.splice 0, 0, owlStopEvent
+        swapEvents "off"
+      base = this
+      locals =
+        offsetX: 0
+        offsetY: 0
+        baseElWidth: 0
+        relativePos: 0
+        position: null
+        minSwipe: null
+        maxSwipe: null
+        sliding: null
+        dargging: null
+        targetElement: null
+
+      base.isCssFinish = true
+      base.$elem.on base.ev_types.start, ".owl-wrapper", dragStart
+
+    getNewPosition: ->
+      base = this
+      newPosition = base.closestItem()
+      if newPosition > base.maximumItem
+        base.currentItem = base.maximumItem
+        newPosition = base.maximumItem
+      else if base.newPosX >= 0
+        newPosition = 0
+        base.currentItem = 0
+      newPosition
+
+    closestItem: ->
+      base = this
+      array = (if base.options.scrollPerPage is true then base.pagesInArray else base.positionsInArray)
+      goal = base.newPosX
+      closest = null
+      $.each array, (i, v) ->
+        if goal - (base.itemWidth / 20) > array[i + 1] and goal - (base.itemWidth / 20) < v and base.moveDirection() is "left"
+          closest = v
+          if base.options.scrollPerPage is true
+            base.currentItem = $.inArray(closest, base.positionsInArray)
+          else
+            base.currentItem = i
+        else if goal + (base.itemWidth / 20) < v and goal + (base.itemWidth / 20) > (array[i + 1] or array[i] - base.itemWidth) and base.moveDirection() is "right"
+          if base.options.scrollPerPage is true
+            closest = array[i + 1] or array[array.length - 1]
+            base.currentItem = $.inArray(closest, base.positionsInArray)
+          else
+            closest = array[i + 1]
+            base.currentItem = i + 1
+
+      base.currentItem
+
+    moveDirection: ->
+      base = this
+      direction = undefined
+      if base.newRelativeX < 0
+        direction = "right"
+        base.playDirection = "next"
+      else
+        direction = "left"
+        base.playDirection = "prev"
+      direction
+
+    customEvents: ->
+      
+      #jslint unparam: true
+      base = this
+      base.$elem.on "owl.next", ->
+        base.next()
+
+      base.$elem.on "owl.prev", ->
+        base.prev()
+
+      base.$elem.on "owl.play", (event, speed) ->
+        base.options.autoPlay = speed
+        base.play()
+        base.hoverStatus = "play"
+
+      base.$elem.on "owl.stop", ->
+        base.stop()
+        base.hoverStatus = "stop"
+
+      base.$elem.on "owl.goTo", (event, item) ->
+        base.goTo item
+
+      base.$elem.on "owl.jumpTo", (event, item) ->
+        base.jumpTo item
+
+
+    stopOnHover: ->
+      base = this
+      if base.options.stopOnHover is true and base.browser.isTouch isnt true and base.options.autoPlay isnt false
+        base.$elem.on "mouseover", ->
+          base.stop()
+
+        base.$elem.on "mouseout", ->
+          base.play()  if base.hoverStatus isnt "stop"
+
+
+    lazyLoad: ->
+      base = this
+      i = undefined
+      $item = undefined
+      itemNumber = undefined
+      $lazyImg = undefined
+      follow = undefined
+      return false  if base.options.lazyLoad is false
+      i = 0
+      while i < base.itemsAmount
+        $item = $(base.$owlItems[i])
+        continue  if $item.data("owl-loaded") is "loaded"
+        itemNumber = $item.data("owl-item")
+        $lazyImg = $item.find(".lazyOwl")
+        if typeof $lazyImg.data("src") isnt "string"
+          $item.data "owl-loaded", "loaded"
+          continue
+        if $item.data("owl-loaded") is `undefined`
+          $lazyImg.hide()
+          $item.addClass("loading").data "owl-loaded", "checked"
+        if base.options.lazyFollow is true
+          follow = itemNumber >= base.currentItem
+        else
+          follow = true
+        base.lazyPreload $item, $lazyImg  if follow and itemNumber < base.currentItem + base.options.items and $lazyImg.length
+        i += 1
+
+    lazyPreload: ($item, $lazyImg) ->
+      showImage = ->
+        $item.data("owl-loaded", "loaded").removeClass "loading"
+        $lazyImg.removeAttr "data-src"
+        if base.options.lazyEffect is "fade"
+          $lazyImg.fadeIn 400
+        else
+          $lazyImg.show()
+        base.options.afterLazyLoad.apply this, [base.$elem]  if typeof base.options.afterLazyLoad is "function"
+      checkLazyImage = ->
+        iterations += 1
+        if base.completeImg($lazyImg.get(0)) or isBackgroundImg is true
+          showImage()
+        else if iterations <= 100 #if image loads in less than 10 seconds
+          window.setTimeout checkLazyImage, 100
+        else
+          showImage()
+      base = this
+      iterations = 0
+      isBackgroundImg = undefined
+      if $lazyImg.prop("tagName") is "DIV"
+        $lazyImg.css "background-image", "url(" + $lazyImg.data("src") + ")"
+        isBackgroundImg = true
+      else
+        $lazyImg[0].src = $lazyImg.data("src")
+      checkLazyImage()
+
+    autoHeight: ->
+      addHeight = ->
+        $currentItem = $(base.$owlItems[base.currentItem]).height()
+        base.wrapperOuter.css "height", $currentItem + "px"
+        unless base.wrapperOuter.hasClass("autoHeight")
+          window.setTimeout (->
+            base.wrapperOuter.addClass "autoHeight"
+          ), 0
+      checkImage = ->
+        iterations += 1
+        if base.completeImg($currentimg.get(0))
+          addHeight()
+        else if iterations <= 100 #if image loads in less than 10 seconds
+          window.setTimeout checkImage, 100
+        else
+          base.wrapperOuter.css "height", "" #Else remove height attribute
+      base = this
+      $currentimg = $(base.$owlItems[base.currentItem]).find("img")
+      iterations = undefined
+      if $currentimg.get(0) isnt `undefined`
+        iterations = 0
+        checkImage()
+      else
+        addHeight()
+
+    completeImg: (img) ->
+      naturalWidthType = undefined
+      return false  unless img.complete
+      naturalWidthType = typeof img.naturalWidth
+      return false  if naturalWidthType isnt "undefined" and img.naturalWidth is 0
+      true
+
+    onVisibleItems: ->
+      base = this
+      i = undefined
+      base.$owlItems.removeClass "active"  if base.options.addClassActive is true
+      base.visibleItems = []
+      i = base.currentItem
+      while i < base.currentItem + base.options.items
+        base.visibleItems.push i
+        $(base.$owlItems[i]).addClass "active"  if base.options.addClassActive is true
+        i += 1
+      base.owl.visibleItems = base.visibleItems
+
+    transitionTypes: (className) ->
+      base = this
+      
+      #Currently available: "fade", "backSlide", "goDown", "fadeUp"
+      base.outClass = "owl-" + className + "-out"
+      base.inClass = "owl-" + className + "-in"
+
+    singleItemTransition: ->
+      transStyles = (prevPos) ->
+        position: "relative"
+        left: prevPos + "px"
+      base = this
+      outClass = base.outClass
+      inClass = base.inClass
+      $currentItem = base.$owlItems.eq(base.currentItem)
+      $prevItem = base.$owlItems.eq(base.prevItem)
+      prevPos = Math.abs(base.positionsInArray[base.currentItem]) + base.positionsInArray[base.prevItem]
+      origin = Math.abs(base.positionsInArray[base.currentItem]) + base.itemWidth / 2
+      animEnd = "webkitAnimationEnd oAnimationEnd MSAnimationEnd animationend"
+      base.isTransition = true
+      base.$owlWrapper.addClass("owl-origin").css
+        "-webkit-transform-origin": origin + "px"
+        "-moz-perspective-origin": origin + "px"
+        "perspective-origin": origin + "px"
+
+      $prevItem.css(transStyles(prevPos, 10)).addClass(outClass).on animEnd, ->
+        base.endPrev = true
+        $prevItem.off animEnd
+        base.clearTransStyle $prevItem, outClass
+
+      $currentItem.addClass(inClass).on animEnd, ->
+        base.endCurrent = true
+        $currentItem.off animEnd
+        base.clearTransStyle $currentItem, inClass
+
+
+    clearTransStyle: (item, classToRemove) ->
+      base = this
+      item.css(
+        position: ""
+        left: ""
+      ).removeClass classToRemove
+      if base.endPrev and base.endCurrent
+        base.$owlWrapper.removeClass "owl-origin"
+        base.endPrev = false
+        base.endCurrent = false
+        base.isTransition = false
+
+    owlStatus: ->
+      base = this
+      base.owl =
+        userOptions: base.userOptions
+        baseElement: base.$elem
+        userItems: base.$userItems
+        owlItems: base.$owlItems
+        currentItem: base.currentItem
+        prevItem: base.prevItem
+        visibleItems: base.visibleItems
+        isTouch: base.browser.isTouch
+        browser: base.browser
+        dragDirection: base.dragDirection
+
+    clearEvents: ->
+      base = this
+      base.$elem.off ".owl owl mousedown.disableTextSelect"
+      $(document).off ".owl owl"
+      $(window).off "resize", base.resizer
+
+    unWrap: ->
+      base = this
+      if base.$elem.children().length isnt 0
+        base.$owlWrapper.unwrap()
+        base.$userItems.unwrap().unwrap()
+        base.owlControls.remove()  if base.owlControls
+      base.clearEvents()
+      base.$elem.attr("style", base.$elem.data("owl-originalStyles") or "").attr "class", base.$elem.data("owl-originalClasses")
+
+    destroy: ->
+      base = this
+      base.stop()
+      window.clearInterval base.checkVisible
+      base.unWrap()
+      base.$elem.removeData()
+
+    reinit: (newOptions) ->
+      base = this
+      options = $.extend({}, base.userOptions, newOptions)
+      base.unWrap()
+      base.init options, base.$elem
+
+    addItem: (htmlString, targetPosition) ->
+      base = this
+      position = undefined
+      return false  unless htmlString
+      if base.$elem.children().length is 0
+        base.$elem.append htmlString
+        base.setVars()
+        return false
+      base.unWrap()
+      if targetPosition is `undefined` or targetPosition is -1
+        position = -1
+      else
+        position = targetPosition
+      if position >= base.$userItems.length or position is -1
+        base.$userItems.eq(-1).after htmlString
+      else
+        base.$userItems.eq(position).before htmlString
+      base.setVars()
+
+    removeItem: (targetPosition) ->
+      base = this
+      position = undefined
+      return false  if base.$elem.children().length is 0
+      if targetPosition is `undefined` or targetPosition is -1
+        position = -1
+      else
+        position = targetPosition
+      base.unWrap()
+      base.$userItems.eq(position).remove()
+      base.setVars()
+
+  $.fn.owlCarousel = (options) ->
+    @each ->
+      return false  if $(this).data("owl-init") is true
+      $(this).data "owl-init", true
+      carousel = Object.create(Carousel)
+      carousel.init options, this
+      $.data this, "owlCarousel", carousel
+
+
+  $.fn.owlCarousel.options =
+    items: 5
+    itemsCustom: false
+    itemsDesktop: [1199, 4]
+    itemsDesktopSmall: [979, 3]
+    itemsTablet: [768, 2]
+    itemsTabletSmall: false
+    itemsMobile: [479, 1]
+    singleItem: false
+    itemsScaleUp: false
+    slideSpeed: 200
+    paginationSpeed: 800
+    rewindSpeed: 1000
+    autoPlay: false
+    stopOnHover: false
+    navigation: false
+    navigationText: ["prev", "next"]
+    rewindNav: true
+    scrollPerPage: false
+    pagination: true
+    paginationNumbers: false
+    responsive: true
+    responsiveRefreshRate: 200
+    responsiveBaseWidth: window
+    baseClass: "owl-carousel"
+    theme: "owl-theme"
+    lazyLoad: false
+    lazyFollow: true
+    lazyEffect: "fade"
+    autoHeight: false
+    jsonPath: false
+    jsonSuccess: false
+    dragBeforeAnimFinish: true
+    mouseDrag: true
+    touchDrag: true
+    addClassActive: false
+    transitionStyle: false
+    beforeUpdate: false
+    afterUpdate: false
+    beforeInit: false
+    afterInit: false
+    beforeMove: false
+    afterMove: false
+    afterAction: false
+    startDragging: false
+    afterLazyLoad: false
+)

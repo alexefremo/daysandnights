@@ -1,0 +1,63 @@
+       <p class="notice"><%= notice %></p>
+       <p class="alert"><%= alert %></p>
+
+<div class="adv">
+<h2>HOT OFFERS</h2>
+    <% @adv.each do |adv| %>
+        <div class="adv-wrapper">
+        <div class="adv-title"><%= adv.title %></div>
+        <% if adv.url == '' %>
+        <div class="adv-img"><%= image_tag adv.advertise_photo(:medium) %></div>
+        <% else %>
+        <div class="adv-img"><a href="http://<%= adv.url %>"><%= image_tag adv.advertise_photo(:small) %></a></div>
+        <% end %>
+        <div class="adv-bg">
+        <div class="adv-day"><%= adv.starts.strftime("%d") %></div>
+        <div>
+        <div class="adv-month"><%= adv.starts.strftime("%B") %></div>
+        <div class="adv-weekday"><%= adv.starts.strftime("%a") %></div>
+        </div>
+        </div>
+        </div>
+    <% end %>
+</div>
+
+<div class="front">
+<div class="front-content">
+<h2>EVENTS</h2>
+<div class="customNavigation">
+  <a class="btn prev"><</a>
+  <a class="btn next">></a>
+</div>
+<div class="owl-carousel">
+  <% @i=0 %>
+  <% @events.each do |event| %>
+  <% @i= @i +1 %>
+    <% if @i%2==1 %>
+      <div>
+    <% end %>
+      <div> 
+        <div><%= link_to image_tag(event.event_photo(:medium)), event %></div>
+        <div class="event-title"><%= link_to event.title, event %></div>
+        <div class="event-date">Date: <%= event.start_date.strftime("%Y-%m-%d from %H-%M") %> <%= event.end_time.strftime("to %H-%M") %></div>
+      </div>
+    <% if @i%2==0 %>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+</div>
+</div>
+
+
+<div class="sidebar-right">
+<h2>NEWS</h2>
+<div class="sidebar-news-wrapper">
+  <% @news.each do |news| %>
+    <div class="sidebar-news">
+        <div class="sidebar-news-link"><%= link_to news.title, news %></div>
+        <div class="sidebar-news-content"><%= truncate(news.content, :length => 50) %></div>
+    </div>
+  <% end %>
+</div>
+</div>

@@ -1,0 +1,58 @@
+<h1><%= current_user.profile_name %> User#content</h1>
+<p>Find me in app/views/user/content.html.erb</p>
+<% if  current_user.right == 'administrator' %>
+<h3><%= link_to 'Manage user rights', manage_users_path %> </h3>
+<h3><%= link_to 'Manage content', manage_admin_content_path %> </h3>
+<h3><%= link_to 'Add advertises', new_advertise_path %> </h3>
+<h3><%= link_to 'Add place types', new_place_type_path %> </h3>
+<h3><%= link_to 'Add news', new_news_path %> </h3>
+<% end %>
+<h3><%= link_to 'Add places', new_place_path %> </h3>
+<h3><%= link_to 'Add events', new_event_path %> </h3>
+  <tbody>
+<% if @news %>
+    <% @news.each do |news| %>
+      <tr>
+        <td><%= news.title %></td>
+        <td><%= news.content %></td>
+        <td><%= link_to 'Edit', edit_news_path(news) %></td>
+        <td><%= link_to 'Destroy', news, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    </br>
+    <% end %>
+<% end %>
+<% if @places %>
+    <% @places.each do |place| %>
+      <tr>
+        <td><%= place.title %></td>
+        <td><%= place.content %></td>
+        <td><%= link_to 'Edit', edit_place_path(place) %></td>
+        <td><%= link_to 'Destroy', place, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    </br>
+   <% end %>
+<% end %>
+<% if @events %>
+    <% @events.each do |event| %>
+      <tr>
+        <td><%= event.title %></td>
+        <td><%= event.content %></td>
+        <td><%= link_to 'Edit', edit_event_path(event) %></td>
+        <td><%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    </br>
+   <% end %>
+<% end %>
+<% if @advertises %>
+    <% @advertises.each do |adv| %>
+      <tr>
+        <td><%= adv.title %></td>
+	<td><%= adv.url %></td>
+        <td><%= link_to 'Edit', edit_advertise_path(adv) %></td>
+        <td><%= link_to 'Destroy', adv, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    </br>
+   <% end %>
+<% end %>
+  </tbody>
+</table>

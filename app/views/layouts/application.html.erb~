@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Daysandnights</title>
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <% @hour = Time.now %>
+  <% if @hour.hour > 18 %>
+  <%= stylesheet_link_tag    "application-nights", media: "all", "data-turbolinks-track" => true %>
+  <% else if @hour.hour < 7%>
+  <%= stylesheet_link_tag    "application-nights", media: "all", "data-turbolinks-track" => true %>
+  <% else %>
+  <%= stylesheet_link_tag    "application-nights", media: "all", "data-turbolinks-track" => true %>
+  <% end %>
+  <% end %>
+  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<div id="page">
+<header>
+<div class="logo"></div>
+<div class="sign-window-back"></div>
+<div class="login">
+  <% if user_signed_in? %>
+    <%= link_to current_user.profile_name, user_path(current_user.profile_name), class: "user-link" %>
+    <%= link_to "LOG OUT", destroy_user_session_path , method: :delete, class: "logout-link"%>
+  <% else %>
+    <div class="register-link" id="register-link">REGISTER</div> 
+    <div class="login-link" id="login-link">LOGIN</div>
+    <div class="sign-window">
+    <%= link_to "Sign up", new_user_registration_path %> or
+    <%= link_to "Sign in", new_user_session_path %>
+    <%= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook) %>
+    </div>
+  <% end %>
+</div>
+</header>
+<nav>
+    <ul>
+    <li class="<%= 'active' if current_page?(root_path) %>"><%= link_to "Welcome", root_path %></li>
+    <li class="<%= 'active' if current_page?(news_index_path) %>"><%= link_to "News", news_index_path %></li>
+    <li class="<%= 'active' if current_page?(places_path) %>"><%= link_to "Places", places_path %>
+    <ul>
+    <% @types = PlaceType.all %>
+    <% @types.group_by(&:category).each do |category, type| %>
+    <li><%= category %>
+    <ul>
+    <% type.each do |t|%>
+    <li><%= link_to t.title, :controller => '/places', :action => "query", :slug => t.slug %></li>
+    <% end %>
+    </ul></li>
+    <% end %>
+    </ul>
+    </li>
+    <li class="<%= 'active' if current_page?(events_path) %>"><%= link_to "Events", events_path %></li>
+    <li class="<%= 'active' if current_page?(contact_path) %>"><%= link_to "Contact us", contact_path %></li>
+    <ul>
+</nav>
+<div id="content">
+<%= yield %>
+</div>
+</div>
+</body>
+</html>

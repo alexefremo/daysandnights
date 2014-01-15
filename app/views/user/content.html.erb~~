@@ -1,0 +1,42 @@
+<h1><%= current_user.profile_name %> User#content</h1>
+<p>Find me in app/views/user/content.html.erb</p>
+<div id="user_nav">
+  <% if user_signed_in? %>
+    Signed in as <%= current_user.profile_name %>. Not you?
+    <%= link_to "Sign out", destroy_user_session_path , method: :delete%>
+  <% else %>
+    <%= link_to "Sign up", new_user_registration_path %> or
+    <%= link_to "Sign in", new_user_session_path %>
+  <% end %>
+</div>
+  <tbody>
+<% if @news %>
+    <% @news.each do |news| %>
+<% if news.user_id.to_i == current_user.id %>
+      <tr>
+        <td><%= news.title %></td>
+        <td><%= news.content %></td>
+        <td><%= link_to 'Edit', edit_news_path(news) %></td>
+        <td><%= link_to 'Destroy', news, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    </br>
+<% end %>
+    <% end %>
+<% else %>
+No content created at all
+<% end %>
+<% if @places %>
+    <% @places.each do |place| %>
+      <tr>
+        <td><%= place.title %></td>
+        <td><%= place.content %></td>
+        <td><%= link_to 'Edit', edit_place_path(place) %></td>
+        <td><%= link_to 'Destroy', place, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    </br>
+    <% end %>
+<% else %>
+No content created at all
+<% end %>
+  </tbody>
+</table>

@@ -1,0 +1,24 @@
+<%= form_for(@place_type) do |f| %>
+  <% if @place_type.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@place_type.errors.count, "error") %> prohibited this place_type from being saved:</h2>
+
+      <ul>
+      <% @place_type.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <% @categories = ["i need", "socialising", "sporting", "developing", "shopping"] %>
+  <div class="field">
+    <%= f.label :title %><br>
+    <%= f.text_field :title %>
+  </div>
+  <div><%= f.label :category %><br />
+  <%= f.select(:category, @categories) %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

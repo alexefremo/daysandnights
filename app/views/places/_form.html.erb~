@@ -1,0 +1,122 @@
+<%= form_for @place, :html => { :multipart => true} do |f| %>
+  <% if @place.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@place.errors.count, "error") %> prohibited this place from being saved:</h2>
+
+      <ul>
+      <% @place.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<div class="img_gallery">
+
+       <%= f.fields_for :place_galleries do |pg| %>
+         <% if pg.object.new_record? %> 
+           <%= pg.file_field :image %>
+         <% end %>
+       <% end %>
+
+       <%= f.fields_for :place_galleries do |pg| %>
+         <% unless pg.object.new_record? %> 
+           <%= link_to(image_tag(pg.object.image.url(:small)), pg.object.image.url(:large))%>
+           <%= pg.check_box :_destroy %>
+         <% end %>
+       <% end %>
+
+</div>
+
+<div class="jobs">
+
+       <%= f.fields_for :jobs do |j| %>
+         <% if j.object.new_record? %> 
+           <%= j.text_area :content %>
+         <% end %>
+       <% end %>
+
+</div>
+
+  <div class="field">
+    <%= f.label :title %><br>
+    <%= f.text_field :title %>
+  </div>
+  <div class="field">
+    <%= f.label :place_photo %><br>
+    <%= f.file_field :place_photo %>
+  </div>
+  <div class="field">
+    <%= f.label :place_type_id %><br>
+    <%= f.collection_select(:place_type_id, PlaceType.all, :id, :title)  %>
+  </div>
+  <div class="field">
+    <%= f.label :content %><br>
+    <%= f.text_area :content %>
+  </div>
+  <div class="field">
+    <%= f.label :address %><br>
+    <%= f.text_field :address %>
+  </div>
+  <div class="field">
+    <%= f.label :mon_start %><br>
+    <%= f.time_select :mon_start %>
+  </div>
+  <div class="field">
+    <%= f.label :mon_end %><br>
+    <%= f.time_select :mon_end %>
+  </div>
+  <div class="field">
+    <%= f.label :tue_start %><br>
+    <%= f.time_select :tue_start %>
+  </div>
+  <div class="field">
+    <%= f.label :tue_end %><br>
+    <%= f.time_select :tue_end %>
+  </div>
+  <div class="field">
+    <%= f.label :wed_start %><br>
+    <%= f.time_select :wed_start %>
+  </div>
+  <div class="field">
+    <%= f.label :wed_end %><br>
+    <%= f.time_select :wed_end %>
+  </div>
+  <div class="field">
+    <%= f.label :thu_start %><br>
+    <%= f.time_select :thu_start %>
+  </div>
+  <div class="field">
+    <%= f.label :thu_end %><br>
+    <%= f.time_select :thu_end %>
+  </div>
+  <div class="field">
+    <%= f.label :fri_start %><br>
+    <%= f.time_select :fri_start %>
+  </div>
+  <div class="field">
+    <%= f.label :fri_end %><br>
+    <%= f.time_select :fri_end %>
+  </div>
+  <div class="field">
+    <%= f.label :sat_start %><br>
+    <%= f.time_select :sat_start %>
+  </div>
+  <div class="field">
+    <%= f.label :sat_end %><br>
+    <%= f.time_select :sat_end %>
+  </div>
+  <div class="field">
+    <%= f.label :sun_start %><br>
+    <%= f.time_select :sun_start %>
+  </div>
+  <div class="field">
+    <%= f.label :sun_end %><br>
+    <%= f.time_select :sun_end %>
+  </div>
+
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

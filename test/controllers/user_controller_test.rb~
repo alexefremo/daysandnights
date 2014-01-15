@@ -1,0 +1,44 @@
+require 'test_helper'
+
+class UserControllerTest < ActionController::TestCase
+  test "should get content" do
+    get :content
+    assert_response :success
+  end
+
+  test "should get subscription" do
+    get :subscription
+    assert_response :success
+  end
+
+  test "should get manage" do
+    get :manage
+    assert_response :success
+  end
+
+  test "should get show" do
+    get :subscription, id: users(:jason).profile_name
+    assert_response :success
+    assert_template 'user/subscription'
+  end
+
+  test "should render a 404 on profile not found" do
+    get :subscription, id: "doesn't exist"
+    assert_response :not_found
+  end
+
+  test "that variables are assigned on successful profile viewing" do
+    get :show, id: users(:jason).profile_name
+    assert assigns(:user)
+    assert_not_empty assigns(:news)
+  end
+
+  test "only shows the correct user's statuses" do
+    get :show, id: users(:jason).profile_name
+    assigns(:news).each do |news|
+      assert_equal users(:jason), news.user
+    end
+  end
+
+
+end

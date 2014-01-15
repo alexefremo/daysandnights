@@ -1,0 +1,31 @@
+<h1><%= current_user.profile_name %> User#content</h1>
+<p>Find me in app/views/user/content.html.erb</p>
+  <tbody>
+<% if @places %>
+    <% @places.each do |place| %>
+      <% if place.user_id.to_i == current_user.id %>
+      <tr>
+        <td><%= place.title %></td>
+        <td><%= place.content %></td>
+        <td><%= link_to 'Edit', edit_place_path(place) %></td>
+        <td><%= link_to 'Destroy', place, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    </br>
+     <% end %>
+   <% end %>
+<% end %>
+<% if @events %>
+    <% @events.each do |event| %>
+      <% if event.user_id.to_i == current_user.id %>
+      <tr>
+        <td><%= event.title %></td>
+        <td><%= event.content %></td>
+        <td><%= link_to 'Edit', edit_event_path(event) %></td>
+        <td><%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    </br>
+      <% end %>
+   <% end %>
+<% end %>
+  </tbody>
+</table>

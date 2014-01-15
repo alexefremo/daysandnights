@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Photo:</strong>
+  <%= image_tag @event.event_photo(:small) %>
+</p>
+
+
+<p>
+  <strong>Title:</strong>
+  <%= @event.title %>
+</p>
+
+<p>
+  <strong>Slug:</strong>
+  <%= @event.slug %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @event.user_id %>
+</p>
+
+<p>
+  <strong>Content:</strong>
+  <%= @event.content %>
+</p>
+
+<p>
+  <strong>Location:</strong>
+  <%= @event.place_id %>
+</p>
+
+<p>
+  <strong>Start date:</strong>
+  <%= @event.start_date %>
+</p>
+
+<p>
+  <strong>End time:</strong>
+  <%= @event.end_time %>
+</p>
+
+<%= link_to 'Edit', edit_event_path(@event) %> |
+<%= link_to 'Back', events_path %>

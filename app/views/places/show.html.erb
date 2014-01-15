@@ -1,0 +1,95 @@
+    <style>
+      html, body, #map-canvas {
+        height: 300px;
+        width: 300px;
+      }
+    </style>
+
+<script src='//google-maps-utility-library-v3.googlecode.com/svn/trunk/richmarker/src/richmarker-compiled.js' type='text/javascript'></script>
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCtT4b7ISSx0uBy3pCEiJ1ulQ-NQG4Th_E&sensor=false"></script>
+<script type="text/javascript">
+          function initialize() {
+           var myLatlng = new google.maps.LatLng(<%= @place.latitude %>, <%= @place.longitude %>); 
+           var mapOptions = {
+              zoom: 16,
+              center: myLatlng
+            };
+            var map = new google.maps.Map(document.getElementById("map-canvas"),
+                mapOptions);
+            var marker = new google.maps.Marker({
+                position: myLatlng,
+                map: map,
+                title: '<%= @place.title %>'
+            });
+            }
+
+          google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+<div id="map-canvas"></div>
+<p id="notice"><%= notice %></p>
+
+
+
+<p>
+  <strong>Photo:</strong>
+  <%= image_tag @place.place_photo(:medium) %>
+</p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @place.title %>
+</p>
+
+<p>
+  <strong>Slug:</strong>
+  <%= @place.slug %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @place.user_id %>
+</p>
+
+<p>
+  <strong>Place type:</strong>
+  <%= @place.place_type_id %>
+</p>
+
+<p>
+  <strong>Content:</strong>
+  <%= @place.content %>
+</p>
+
+<p>
+  <strong>Address:</strong>
+  <%= @place.address %>
+</p>
+
+<p>
+  <strong>Starts:</strong>
+  <%= @place.mon_start %>
+  <%= @place.mon_end %>
+  <%= @place.tue_start %>
+  <%= @place.tue_end %>
+  <%= @place.wed_start %>
+  <%= @place.wed_end %>
+  <%= @place.thu_start %>
+  <%= @place.thu_end %>
+  <%= @place.fri_start %>
+  <%= @place.fri_end %>
+  <%= @place.sat_start %>
+  <%= @place.sat_end %>
+  <%= @place.sun_start %>
+  <%= @place.sun_end %>
+</p>
+
+<% @gallery.each do |gallery| %>
+  <%= image_tag gallery.image(:medium) %>
+<% end %>
+
+<% @jobs.each do |job| %>
+  <%= job.content %>
+<% end %>
+
+<%= link_to 'Edit', edit_place_path(@place) %> |
+<%= link_to 'Back', places_path %>

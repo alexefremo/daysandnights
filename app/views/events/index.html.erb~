@@ -1,0 +1,59 @@
+<h1>Listing events</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Photo</th>
+      <th>Title</th>
+      <th>Content</th>
+      <th>Location</th>
+      <th>Start date</th>
+      <th>End time</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @events.each do |event| %>
+      <tr>
+        <td><%= image_tag event.event_photo(:small) %></td>
+        <td><%= event.title %></td>
+        <td><%= event.content %></td>
+        <td><%= event.place.title %></td>
+        <td><%= event.start_date %></td>
+        <td><%= event.end_time %></td>
+        <td>
+        <% @likes = Like.where(event_id: event.id, status: 'Like').count %>
+        <% @dislikes = Like.where(event_id: event.id, status: 'Dislike').count %>
+	<%= @likes - @dislikes %>
+	<% if user_signed_in? %>
+        <% if current_user.right == 'user' %>
+        <%= button_to "Like", :controller => :events, 
+                                   :action => 'like',
+                                   :evid => event.id,
+                                   :method => :post %>
+
+        <%= button_to "Dislike", :controller => :events, 
+                                     :action => 'dislike',
+                                     :evid => event.id,
+                                     :method => :post %>
+        <% end %>
+
+        <% else %>
+        <%= button_to "Like", user_session_path %>
+        <%= button_to "Dislike", user_session_path %>
+        <% end %>
+        </td>
+        <td><%= link_to 'Show', event %></td>
+        <td><%= link_to 'Edit', edit_event_path(event) %></td>
+        <td><%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Event', new_event_path %>

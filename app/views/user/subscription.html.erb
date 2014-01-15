@@ -1,0 +1,92 @@
+<h1><%= @user.profile_name %> id:<%= @user.id %> User#subscription</h1>
+<p>Find me in app/views/user/subscription.html.erb</p>
+<% if @user.right == 'User' %>
+<% if @subscriptions %>
+  <% @subscriptions.each do |subscription| %>
+<table>
+  <thead>
+    <tr>
+      <th>Photo</th>
+      <th>Title</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= image_tag subscription.place.place_photo(:small) %></td>
+      <td><%= subscription.place.title %></td>
+      <td>
+      <% if user_signed_in? %>
+        <% if Subscription.exists?(user_id: current_user.id, place_id: subscription.place.id) %>
+          <%= button_to "unsubscribe", :controller => :places, 
+                                     :action => 'delid',
+                                     :plid => subscription.place.id,
+                                     :method => :post %>
+
+        <% else %>
+          <%= button_to "subscribe", :controller => :places, 
+                                         :action => 'addid',
+                                         :plid => subscription.place.id,
+                                         :method => :post %>
+        <% end %>
+      <% else %>
+        <%= button_to "subscribe", user_session_path %>
+      <% end %>
+      </td>
+    </tr>
+  </br>
+  <% end %>
+<% else %>
+  No subscriptions... yet
+<% end %>
+
+</tbody>
+</table>
+<% end %>
+<% if current_user.id == @user.id %>
+<% if  @user.right == 'administrator' %>
+<h3><%= link_to 'Manage user rights', manage_users_path %> </h3>
+<h3><%= link_to 'Manage content', manage_admin_content_path %> </h3>
+<h3><%= link_to 'Add advertises', new_advertise_path %> </h3>
+<h3><%= link_to 'Add place types', new_place_type_path %> </h3>
+<h3><%= link_to 'Add news', new_news_path %> </h3>
+<h3><%= link_to 'Add places', new_place_path %> </h3>
+<h3><%= link_to 'Add events', new_event_path %> </h3>
+<% end %>
+<% if @user.right == 'company' %>
+<h3><%= link_to 'Add places', new_place_path %> </h3>
+<h3><%= link_to 'Add events', new_event_path %> </h3>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Profile name</th>
+      <th>Title</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @events.each do |event| %>
+    <% @curplace = Place.find_by(id: event.place_id) %>
+     <% if @user.id == @curplace.user_id %>
+    <tr>
+
+    <td><% @creator = User.find_by(id: event.user_id) %><%= @creator.profile_name %></td>
+    <td><%= event.title %></td>
+    <td><%= event.published %></td>
+    <td><%= button_to "approve", :controller => :user, 
+                                 :action => 'approve',
+                                 :eventid => event.id,
+                                 :method => :post %></td>
+    <td><%= button_to "disapprove", :controller => :user, 
+                                 :action => 'disapprove',
+                                 :eventid => event.id,
+                                 :method => :post %></td>
+
+    </tr>
+    <% end %>
+  <% end %>
+</tbody>
+</table>
+<% end %>

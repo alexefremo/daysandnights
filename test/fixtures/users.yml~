@@ -1,0 +1,15 @@
+alex:
+  profile_name: "alexefremo"
+  email: "alex17021991@gmail.com"
+
+jason:
+  first_name: "Jason"
+  last_name: "Seifer"
+  email: "jason@teamtreehouse.com"
+  profile_name: "jasonseifer"
+
+jim:
+  first_name: "Jim"
+  last_name: "Hoskins"
+  email: "jim@teamtreehouse.com"
+  profile_name: "jimhoskins"

@@ -1,0 +1,23 @@
+<h1>User#manage</h1>
+<p>Find me in app/views/user/manage.html.erb</p>
+
+<%= form_tag complete_user_index_path, :method => :put do %>
+<% if @user %>
+  <% @user.each do |user| %>
+    <%= user.profile_name %>
+    <%= user.right %>
+    User
+      <%= check_box_tag "complete_users[]", user.id %>
+    Company
+      <%= check_box_tag "complete_companies[]", user.id %>
+    Administrator
+      <%= check_box_tag "complete_admins[]", user.id %>
+    <% end %>
+    </br>
+  <% end %>
+<% end %>
+  <div class="actions">
+       <%= submit_tag 'Update' %>
+  </div>
+<% end %>
+

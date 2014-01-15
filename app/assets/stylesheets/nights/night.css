@@ -1,0 +1,391 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain) loh
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/*-----------------My CSS-------------------*/
+
+@font-face {
+}
+
+#page {
+  width: 1000px;
+  margin: auto;
+}
+
+h2 {
+  font-size: 20px;
+  text-transform: uppercase;
+  color: #ae2fb4;
+}
+
+header {
+  height:365px;
+}
+
+.user-link, .login-link, .register-link, .logout-link {
+  text-transform: uppercase;
+  text-decoration: none;
+  font-size:16px;
+  color: black;
+  display:inline;
+}
+
+.user-link::after, .login-link::after {
+  display:inline-block;
+  content:'';
+  margin: 0 0 0 3px;
+  width:11px;
+  height:11px;
+  background: url('/img/logindotnight.png') no-repeat;
+}
+
+.register-link::after, .logout-link::after {
+  display:inline-block;
+  content:'';
+  margin: 0 0 0 10px;
+  vertical-align:-15px;
+  width:42px;
+  height:42px;
+  background: url('/img/nightlogin.png') no-repeat;
+}
+
+
+.logo {
+  margin: 30px 0 0 0;
+  width:586px;
+  height:239px;
+  background: url("/img/logo_night.png") no-repeat;
+  float:left;
+}
+
+.login {
+  margin: 100px 0 0 0;
+  float: right;
+}
+
+nav {
+  text-transform: uppercase;
+  height: 50px;
+  width: 1000px;
+  background: white;
+  border-bottom: 3px solid #ae2fb4;
+}
+
+nav ul {
+  padding: 0;
+  list-style: none;
+  float: left;
+  z-index: 5;
+}
+
+nav a {
+  text-decoration: none;
+}
+
+nav ul li {
+  float: left;
+  padding:17px 0;
+}
+
+
+nav > ul > li {
+  background: white;
+}
+
+nav > ul > li.active {
+  background: #ae2fb4;
+}
+
+nav > ul > li:hover {
+  background: #ae2fb4;
+}
+
+nav > ul > li:hover > a {
+  color: white;
+}
+
+nav > ul > li > a {
+  padding: 0 17px;
+  color: #ae2fb4;
+  border-right: 1px solid #ae2fb4;
+}
+
+nav > ul > li.active > a {
+  color: white;
+}
+
+nav > ul > li > ul {
+  display:none;
+  font-size: 11px;
+  background:black;
+  position: absolute;
+  border: 1px solid #222;
+  margin-top: 17px;
+}
+
+nav > ul > li:hover > ul {
+  display:block;
+}
+
+nav ul li ul li {
+  margin: 20px 20px 10px 20px;
+  width: 120px;
+  color: white;
+}
+
+nav ul li ul li ul {
+  margin: 10px 0px 0px 0px;
+}
+
+nav ul li ul li ul li {
+  padding: 10px 0px 10px 0px;
+  border-bottom:1px solid #2a2a2a;
+}
+
+nav > ul > li > ul > li > ul > li {
+  margin: 10px 0;
+}
+
+nav > ul > li > ul > li > ul > li > a {
+  color: #767676;
+}
+
+nav > ul > li > ul > li > ul > li > a:hover {
+  color: white;
+}
+
+body {
+  font-family: 'PT Sans';
+  background: url("/img/night.jpg") top no-repeat;
+  background-attachment: fixed;
+  background-size:110%;
+}
+
+#content {
+  float:left;
+  width:1000px;
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+}
+
+.sign-window {
+  display: none;
+  padding: 50px;
+  background:red;
+  position: fixed;
+  top: 50%;
+  width: 300px;
+  left: 30%;
+  z-index: 2; 
+}
+
+.sign-window-back {
+  display: none;
+  top: -5px;
+  left:-5px;
+  position: fixed;
+  width: 105%;
+  height: 105%;
+  z-index: 1;
+  background: black;
+  opacity: 0.3;
+}
+
+.on {
+  display: block !important;
+}
+
+.off {
+  display: none !important;
+}
+
+.adv {
+  float: left;
+  padding: 50px 15px 0 25px;
+}
+
+.adv-wrapper {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.adv-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: white;
+  margin: 20px 0 10px 0;
+  padding-bottom: 7px;
+  border-bottom: 1px solid #333;
+}
+
+.adv-bg {
+  opacity: 0.9;
+  position: absolute;
+  bottom: -50px;
+  left: 50px;
+  width: 182px;
+  height: 88px;
+  color: white;
+  padding: 2rem 1rem;
+  background: url('/img/numbers.png') no-repeat;
+}
+
+.adv-day, .adv-month, .adv-weekday {
+  float:left;
+}
+
+.adv-weekday {
+  font-size: 26px;
+  margin: 8px 0px 0px -85px;
+}
+
+.adv-month {
+  font-size: 26px;
+  margin: -22px 0 0 5px;
+}
+
+.adv-day {
+  font-size:58px;
+  color:#eee;
+  margin: -25px 0 0 -10px;
+}
+
+.front {
+  margin: 50px 0 0 0;
+  width: 422px;
+  float:left;
+  border-right: 1px solid #333;
+  border-left: 1px solid #333;
+}
+
+.front-content {
+  width: 370px;
+  margin:auto
+}
+
+.owl-carousel{
+  margin: 41px 0 0 0;
+  width:370px;
+  float:left;
+}
+
+.event-title {
+  margin: 10px 0 5px 0;
+}
+
+.event-date {
+  margin: 0 0 20px 0;
+}
+
+.event-title a {
+  text-decoration: none;
+  color: #ae2fb4;
+}
+
+.event-title a:hover {
+  color: #712675;
+}
+
+.owl-theme .owl-controls .owl-page span {
+  width:5px;
+  height: 5px;
+  margin: 5px 3px;
+  background: #666;
+}
+
+.owl-page.active span {
+  background: #ae2fb4 !important;
+}
+
+.owl-theme .owl-controls {
+  float: right;
+  margin: -58px 30px 0 0px;
+}
+
+.customNavigation {
+  float:right;
+  margin: -19px 0 0 0;
+}
+
+.customNavigation .next, .customNavigation .prev {
+  cursor: pointer;
+  color: #ae2fb4;
+}
+
+.customNavigation .next:hover, .customNavigation .prev:hover {
+  color: #712675;
+}
+
+.sidebar-right {
+  width:240px;
+  padding:50px 25px 0 25px;
+  float:left;
+}
+
+.sidebar-news {
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid white;
+}
+
+.sidebar-news-link a {
+  text-decoration:none;
+  color: #ae2fb4;
+}
+
+.sidebar-news-link a:hover {
+  color: #712675;
+}
+
+.sidebar-news-wrapper {
+  margin-top: 35px;
+}
+
+.sidebar-news-content {
+  margin: 10px 0 0 0;
+}
