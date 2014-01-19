@@ -22,11 +22,19 @@ class PlacesController < ApplicationController
     Subscription.create(user_id: current_user.id, place_id: params[:plid], user_gender: current_user.gender)    
     @places = Place.all
     @subs = Subscription.all
+    @subscribed = Place.find_by_id(params[:plid])
+    @subscribed.update_attributes(:subscribers_count => Subscription.where(place_id: params[:plid]).count)
+    @subscribed.update_attributes(:subscribers_male => Subscription.where(place_id: params[:plid], user_gender: 'male').count)
+    @subscribed.update_attributes(:subscribers_female => Subscription.where(place_id: params[:plid], user_gender: 'female').count)
     redirect_to places_path
   end
 
   def delid
     @lolka = Subscription.where(user_id: current_user.id, place_id: params[:plid]).destroy_all
+    @subscribed = Place.find_by_id(params[:plid])
+    @subscribed.update_attributes(:subscribers_count => Subscription.where(place_id: params[:plid]).count)
+    @subscribed.update_attributes(:subscribers_male => Subscription.where(place_id: params[:plid], user_gender: 'male').count)
+    @subscribed.update_attributes(:subscribers_female => Subscription.where(place_id: params[:plid], user_gender: 'female').count)
     @places = Place.all
     redirect_to places_path
   end
@@ -35,7 +43,8 @@ class PlacesController < ApplicationController
   # GET /places
   # GET /places.json
   def index
-    @places = Place.all
+    @places = Place.sorted(params[:sort], "created_at DESC").page(params[:page]).per(4) 
+    @news = News.all.order("created_at DESC").limit(4)
   end
 
   def query
@@ -114,6 +123,6 @@ class PlacesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def place_params
-      params.require(:place).permit(:title, :slug, :user_id, :place_type_id, :content, :address, :place_photo, :longitude, :latitude, :mon_start, :mon_end, :tue_start, :tue_end, :wed_start, :wed_end, :thu_start, :thu_end, :fri_start, :fri_end, :sat_start, :sat_end, :sun_start, :sun_end, place_galleries_attributes: [:image, :id, :_destroy], jobs_attributes: [:content, :id])
+      params.require(:place).permit(:title, :slug, :user_id, :place_type_id, :content, :address, :place_photo, :longitude, :latitude, :subscribers_count, :subscribers_male, :subscribers_female, :mon_start, :mon_end, :tue_start, :tue_end, :wed_start, :wed_end, :thu_start, :thu_end, :fri_start, :fri_end, :sat_start, :sat_end, :sun_start, :sun_end, place_galleries_attributes: [:image, :id, :_destroy], jobs_attributes: [:content, :id])
     end
 end

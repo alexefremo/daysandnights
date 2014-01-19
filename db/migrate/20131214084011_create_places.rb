@@ -9,6 +9,9 @@ class CreatePlaces < ActiveRecord::Migration
       t.integer :place_type_id
       t.text :content
       t.string :address
+      t.integer :subscribers_count, :default => 0
+      t.integer :subscribers_male, :default => 0
+      t.integer :subscribers_female, :default => 0
       t.time :mon_start
       t.time :mon_end
       t.time :tue_start

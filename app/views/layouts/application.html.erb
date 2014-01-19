@@ -35,11 +35,11 @@
   <% end %>
 </div>
 </header>
-<nav>
+<nav class="menu">
     <ul>
     <li class="<%= 'active' if current_page?(root_path) %>"><%= link_to "Welcome", root_path %></li>
-    <li class="<%= 'active' if current_page?(news_index_path) %>"><%= link_to "News", news_index_path %></li>
-    <li class="<%= 'active' if current_page?(places_path) %>"><%= link_to "Places", places_path %>
+    <li class="<%= 'active' if current_page?(news_index_path) or (params[:controller]=='news' and params[:action] == 'show') %>"><%= link_to "News", news_index_path %></li>
+    <li class="<%= 'active' if current_page?(places_path) or (params[:controller]=='places' and params[:action] == 'query') or (params[:controller]=='places' and params[:action] == 'show') %>"><%= link_to "Places", places_path %>
     <ul>
     <% @types = PlaceType.all %>
     <% @types.group_by(&:category).each do |category, type| %>
@@ -52,7 +52,7 @@
     <% end %>
     </ul>
     </li>
-    <li class="<%= 'active' if current_page?(events_path) %>"><%= link_to "Events", events_path %></li>
+    <li class="<%= 'active' if current_page?(events_path) or (params[:controller]=='events' and params[:action] == 'show') %>"><%= link_to "Events", events_path %></li>
     <li class="<%= 'active' if current_page?(contact_path) %>"><%= link_to "Contact us", contact_path %></li>
     <ul>
 </nav>
@@ -61,4 +61,6 @@
 </div>
 </div>
 </body>
+<bottom>
+</bottom>
 </html>

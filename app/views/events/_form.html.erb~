@@ -25,15 +25,15 @@
   </div>
   <div class="field">
     <%= f.label :place_id %><br>
-    <%= f.collection_select_tag(:place_id, @places, :id, :title) %>
+    <%= f.collection_select(:place_id, @places, :id, :title) %>
   </div>
   <div class="field">
     <%= f.label :start_date %><br>
     <%= f.date_select :start_date %>
   </div>
   <div class="field">
-    <%= f.label :start_time %><br>
-    <%= f.time_select :start_time %>
+    <%= f.label 'Start time' %><br>
+    <%= f.time_select :start_date %>
   </div>
   <div class="field">
     <%= f.label :end_time %><br>

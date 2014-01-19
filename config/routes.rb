@@ -9,8 +9,7 @@ Daysandnights2::Application.routes.draw do
 
   resources :events
 
-  get "place/:slug", to: "places#query"
-
+  get "place/:slug", to: "places#query", as: "slug"
 
    get "manage/users", to: "user#update"
    get "manage/content", to: "user#content"
@@ -33,7 +32,7 @@ Daysandnights2::Application.routes.draw do
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   root "site#index"
   get "contact", to: "site#contact_us"
-
+  get "result", to: "site#result"
 
 
   resources :places do

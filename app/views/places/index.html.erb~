@@ -1,28 +1,29 @@
-<h1>Listing places</h1>
+<div class='content-wide'>
+<p id="notice"><%= notice %></p>
 
-<table>
-  <thead>
-    <tr>
-      <th>Subscription</th>
-      <th>Photo</th>
-      <th><%= link_to 'Title', :sort => "title", :direction => "asc" %></th>
-      <th>Place type</th>
-      <th>Content</th>
-      <th>Address</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
+<h2>PLACES</h2>
+
+   <div class="sorting">
+     SORT BY
+     <%= link_to_sorted "SUBSCRIBER", :subscribers_count %>
+     <%= link_to_sorted "FEMALE", :subscribers_female %>
+     <%= link_to_sorted "MALE", :subscribers_male %>
+  </div>
+
     <% @places.each do |place| %>
-      <tr>
-        <td>
-        All subscriptions: <%= Subscription.where(place_id: place.id).count %> 
-        Males: <%= Subscription.where(user_gender: 'male', place_id: place.id).count %> 
-        Females: <%= Subscription.where(user_gender: 'female', place_id: place.id).count %>
-        </td>
-        <td>
+                
+      <div class="place-article">
+        <div class="place-preview"><%= link_to image_tag(place.place_photo(:small)), place %></div>
+        <div class="place-article-wrapper">
+        <div class="place-title"><%= link_to place.title, place %></div>
+        <div class="place-content"><%= truncate(place.content, :length => 50) %></div>
+        <div class="place-address">address: <%= place.address %></div>
+
+        <div class="place-subscription">
+        <div class="subscription-male"><%= place.subscribers_male %></div> 
+        <div class="subscription-female"><%= place.subscribers_female %></div>
+        
+        <div class="subscribe-button">
 	<% if user_signed_in? %>
         <% if current_user.right == 'user' %>
         <% if Subscription.exists?(user_id: current_user.id, place_id: place.id) %>
@@ -41,20 +42,34 @@
         <% else %>
         <%= button_to "subscribe", user_session_path %>
         <% end %>
-        </td>
-        <td><p><%= image_tag place.place_photo(:small) %></td>
-        <td><%= place.title %></td>
-        <td><%= place.place_type.title %></td>
-        <td><%= place.content %></td>
-        <td><%= place.address %></td>
-        <td><%= link_to 'Show', place %></td>
-        <td><%= link_to 'Edit', edit_place_path(place) %></td>
-        <td><%= link_to 'Destroy', place, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+        </div>
+        <div class="place-gmap">map</div>
+        </div>
+        </div>
+      </div>
+  <% end %>
+<%= paginate @places, :window => 1 %>
+</div>
 
-<br>
+<div class="sidebar-right-340">
+<h2>NEWS</h2>
+<div class="sidebar-news-wrapper">
+  <% @news.each do |news| %>
+    <div class="sidebar-news">
+        <div class="sidebar-news-link"><%= link_to news.title, news %></div>
+        <div class="sidebar-news-content"><%= truncate(news.content, :length => 50) %></div>
+    </div>
+  <% end %>
+</div>
 
-<%= link_to 'New Place', new_place_path %>
+<div class="search-wrapper">
+<h2>SEARCH</h2>
+<div class="search-form">
+<%= form_tag result_path, :method => :get do %>
+    <%= text_field_tag :search, params[:search], :placeholder => "Search...", class: "search-input" %>
+    <%= submit_tag "Search", :name => nil, :type => :image, :src => "/img/loop.png", class: "search-loop" %>
+<% end %>
+</div>
+</div>
+
+</div>

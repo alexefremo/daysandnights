@@ -11,6 +11,7 @@
 // about supported directives.
 //
 //= require lolka
+//= require jquery.ui.all
 //= require owl.carousel
 //= require jquery_ujs
 //= require turbolinks

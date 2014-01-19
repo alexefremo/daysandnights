@@ -22,7 +22,8 @@ class NewsController < ApplicationController
   # GET /news
   # GET /news.json
   def index
-    @news = News.all
+    @news = News.order("created_at").page(params[:page]).per(4)
+    @places = Place.all.limit(2)
   end
 
   # GET /news/1

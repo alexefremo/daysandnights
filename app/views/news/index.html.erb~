@@ -1,39 +1,32 @@
-<h1>Listing news</h1>
+<div class='content-wide'>
+<%= link_to_sorted "started at", :created_at %>
+    <% @news.each do |news| %>
+<div class='news-article'>
+        <div class='news-title'><%= link_to news.title, news %></div>
+        <div class='news-content'><%= truncate(news.content, :length => 50) %></div>
+        <div class='news-more'><%= link_to 'Read more', news %></div>
+</div>
+    <% end %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Content</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-<div id="user_nav">
-  <% if user_signed_in? %>
-    Signed in as <%= current_user.profile_name %>. Not you?
-    <%= link_to "Sign out", destroy_user_session_path , method: :delete%>
-  <% else %>
-    <%= link_to "Sign up", new_user_registration_path %> or
-    <%= link_to "Sign in", new_user_session_path %>
+<%= paginate @news, :window => 1 %>
+</div>
+
+<div class="sidebar-right-340">
+<h2>PLACES</h2>
+<div class="sidebar-right-wrapper">
+  <% @places.each do |place| %>
+        <div class="sidebar-right-img"><%= link_to image_tag(place.place_photo(:small)), place %></div>
   <% end %>
 </div>
-  <tbody>
-    <% @news.each do |news| %>
-      <tr>
-        <td><%= news.title %></td>
-        <td><%= news.content %></td>
-        <td><%= link_to 'Show', news %></td>
-        <td><%= link_to 'Edit', edit_news_path(news) %></td>
-        <td><% if user_signed_in? %><% if current_user.right == 'company' or current_user.right == 'administrator' %><%= link_to 'Destroy', news, method: :delete, data: { confirm: 'Are you sure?' } %><% end %><% end %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
 
-<br>
-<% if user_signed_in? %>
-<%= link_to 'New News', new_news_path %>  
+<div class="search-wrapper">
+<h2>SEARCH</h2>
+<div class="search-form">
+<%= form_tag result_path, :method => :get do %>
+    <%= text_field_tag :search, params[:search], :placeholder => "Search...", class: "search-input" %>
+    <%= submit_tag "Search", :name => nil, :type => :image, :src => "/img/loop.png", class: "search-loop" %>
 <% end %>
+</div>
+</div>
 
+</div>

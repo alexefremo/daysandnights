@@ -9,5 +9,7 @@ class News < ActiveRecord::Base
     self.slug = self.title.parameterize
   end
 
+  validates :title, uniqueness: true
+
   belongs_to :user
 end

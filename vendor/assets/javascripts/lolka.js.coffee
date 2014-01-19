@@ -1,4 +1,12 @@
 ready = ->
+  $("#event_search").val ""
+  $("#event_search").datepicker
+    dateFormat: "yy-mm-dd"
+    yearRange: "c-5:c+0"
+    prevText: "<<"
+    nextText: ">>"
+    onSelect: (dateText, inst) ->
+      $(".events-search").submit()
   $('#login-link').click ->
     $('.sign-window').addClass('on')
     $('.sign-window-back').addClass('on')
@@ -12,6 +20,7 @@ ready = ->
     stopOnHover: true
     responsive: false
     autoHeight: true
+    lazyEffect: false
     afterInit: (elem) ->
       that = this
       that.owlControls.prependTo elem

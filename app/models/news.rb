@@ -12,4 +12,9 @@ class News < ActiveRecord::Base
   validates :title, uniqueness: true
 
   belongs_to :user
+
+  searchable do
+    text :title, :content
+  end
+
 end

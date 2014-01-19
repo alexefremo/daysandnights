@@ -6,9 +6,10 @@ class CreateEvents < ActiveRecord::Migration
       t.integer :user_id
       t.text :content
       t.integer :place_id
-      t.date :start_date
-      t.time :start_time
+      t.datetime :start_date
       t.time :end_time
+      t.string :published
+      t.integer :user_id, :default => 0
 
       t.timestamps
     end

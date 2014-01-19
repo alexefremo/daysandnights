@@ -16,7 +16,7 @@ class Place < ActiveRecord::Base
 
 
 
-  has_attached_file :place_photo, :styles => { :small => "150x150>", :medium => "500x500>", :large => "1000x1000>"},
+  has_attached_file :place_photo, :styles => { :small => "200x200#", :medium => "370x225", :large => "600x400" },
                   :url  => "/assets/places/:id/:style/:basename.:extension",
                   :path => ":rails_root/public/assets/places/:id/:style/:basename.:extension"
 
@@ -31,5 +31,9 @@ class Place < ActiveRecord::Base
   has_many :jobs
   has_many :place_galleries, :dependent => :destroy
   accepts_nested_attributes_for :place_galleries, :jobs, :allow_destroy => true
+
+  searchable do
+    text :title, :content
+  end
 
 end

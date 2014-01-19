@@ -13,7 +13,7 @@ class Advertise < ActiveRecord::Base
 
   validates :title, uniqueness: true
 
-  has_attached_file :advertise_photo, :styles => { :small => "100x120", :medium => "240x280" },
+  has_attached_file :advertise_photo, :styles => { :small => "100x120", :medium => "240x280#" },
                   :url  => "/assets/advertise/:id/:style/:basename.:extension",
                   :path => ":rails_root/public/assets/advertise/:id/:style/:basename.:extension"
 

@@ -7,6 +7,14 @@ gem 'omniauth-facebook'
 gem 'stringex'
 gem 'paperclip'
 gem 'geocoder'
+gem 'sunspot_rails'
+gem 'progress_bar'
+gem 'sunspot_solr'
+gem 'kaminari'
+gem 'sorted'
+gem 'jquery_datepicker'
+gem "jquery-ui-rails"
+
 group :test do
   gem 'shoulda'
 end

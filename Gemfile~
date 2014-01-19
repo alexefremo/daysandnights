@@ -1,13 +1,18 @@
 source 'https://rubygems.org'
 
 gem 'owlcarousel-rails'
-gem 'bootstrap-sass'
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'stringex'
 gem 'paperclip'
 gem 'geocoder'
+gem 'sunspot_rails'
+gem 'progress_bar'
+gem 'sunspot_solr'
+gem 'kaminari'
+gem 'sorted'
+
 group :test do
   gem 'shoulda'
 end

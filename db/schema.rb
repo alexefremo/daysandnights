@@ -32,10 +32,10 @@ ActiveRecord::Schema.define(version: 20140107135317) do
     t.integer  "user_id"
     t.text     "content"
     t.integer  "place_id"
-    t.date     "start_date"
-    t.time     "start_time"
+    t.datetime "start_date"
     t.time     "end_time"
     t.string   "published"
+    t.integer  "like_count",               default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "event_photo_file_name"
@@ -95,6 +95,9 @@ ActiveRecord::Schema.define(version: 20140107135317) do
     t.integer  "place_type_id"
     t.text     "content"
     t.string   "address"
+    t.integer  "subscribers_count",        default: 0
+    t.integer  "subscribers_male",         default: 0
+    t.integer  "subscribers_female",       default: 0
     t.time     "mon_start"
     t.time     "mon_end"
     t.time     "tue_start"

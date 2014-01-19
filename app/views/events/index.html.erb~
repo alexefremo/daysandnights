@@ -1,59 +1,94 @@
-<h1>Listing events</h1>
+<div class='content-wide'>
+<p id="notice"><%= notice %></p>
 
-<table>
-  <thead>
-    <tr>
-      <th>Photo</th>
-      <th>Title</th>
-      <th>Content</th>
-      <th>Location</th>
-      <th>Start date</th>
-      <th>End time</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
+<h2>EVENTS</h2>
 
-  <tbody>
+   <div class="sorting">
+     SORT BY
+     <%= link_to_sorted "VOTES", :like_count %>
+     <%= link_to_sorted "START DATE", :start_date %>
+     <%= form_tag events_path, :method => :get, class: "events-search" do %>
+       <%= text_field_tag :search, params[:search], class: "events-search-input" %>
+     <% end %>
+    </div>
+
+
     <% @events.each do |event| %>
-      <tr>
-        <td><%= image_tag event.event_photo(:small) %></td>
-        <td><%= event.title %></td>
-        <td><%= event.content %></td>
-        <td><%= event.place.title %></td>
-        <td><%= event.start_date %></td>
-        <td><%= event.end_time %></td>
-        <td>
-        <% @likes = Like.where(event_id: event.id, status: 'Like').count %>
-        <% @dislikes = Like.where(event_id: event.id, status: 'Dislike').count %>
-	<%= @likes - @dislikes %>
-	<% if user_signed_in? %>
-        <% if current_user.right == 'user' %>
-        <%= button_to "Like", :controller => :events, 
-                                   :action => 'like',
-                                   :evid => event.id,
-                                   :method => :post %>
 
-        <%= button_to "Dislike", :controller => :events, 
-                                     :action => 'dislike',
-                                     :evid => event.id,
-                                     :method => :post %>
-        <% end %>
+    <div class="event-preview"><%= link_to image_tag(event.event_photo(:small)), event %></div>
 
-        <% else %>
-        <%= button_to "Like", user_session_path %>
-        <%= button_to "Dislike", user_session_path %>
-        <% end %>
-        </td>
-        <td><%= link_to 'Show', event %></td>
-        <td><%= link_to 'Edit', edit_event_path(event) %></td>
-        <td><%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+    <div class="event-content-wrapper">
+      <div class="event-title"><%= link_to event.title, event %></div>
+      <div class="event-content"><%= truncate(event.content, :length => 50) %></div>
+      <div class="event-location">Location: <%= link_to event.place.title, event.place %></div>
+      <div class="event-start">Date: <%= event.start_date.strftime("%Y-%m-%d from %H-%M") %> <%= event.end_time.strftime("to %H-%M") %></div>
+    </div>
+
+    <div class="like-dislike-menu">
+   
+    <% @likes = Like.where(event_id: event.id, status: 'Like').count %>
+    <% @dislikes = Like.where(event_id: event.id, status: 'Dislike').count %>
+
+    <% if user_signed_in? %>
+      <% if current_user.right == 'user' %>
+        <%= button_to "", {:controller => :events, 
+                               :action => 'like',
+                               :evid => event.id,
+                               :method => :post,
+			       :type => 'submit'}, {:class => 'like_button'}  %>
+      <% else %>
+        <div class='like_button'></div>
+      <% end %>
+
+    <% else %>
+      <%= button_to "", user_session_path, {:type => 'submit', :class => 'like_button'} %>
     <% end %>
-  </tbody>
-</table>
+    
+    <div class='show-event-likes'>
+      <% if @likes == 0 %><%= @likes %> <%else%> +<%= @likes %> <% end %>
+    </div>
 
-<br>
+    <% if user_signed_in? %>
+      <% if current_user.right == 'user' %>
+        <%= button_to "", {:controller => :events, 
+                               :action => 'dislike',
+                               :evid => event.id,
+                               :method => :post,
+			       :type => 'submit'}, {:class => 'dislike_button'} %>
+      <% else %>
+        <div class='dislike_button'></div>
+      <% end %>
 
-<%= link_to 'New Event', new_event_path %>
+    <% else %>
+      <%= button_to "", user_session_path, {:type => 'submit', :class => 'dislike_button'} %>
+    <% end %>  
+    <div class='show-event-dislikes'>
+      <% if @dislikes == 0 %><%= @dislikes %> <%else%> -<%= @dislikes %> <% end %>
+    </div>
+    </div>
+    <% end %>
+<%= paginate @events, :window => 1 %>
+</div>
+
+<div class="sidebar-right-340">
+<h2>NEWS</h2>
+<div class="sidebar-news-wrapper">
+  <% @news.each do |news| %>
+    <div class="sidebar-news">
+        <div class="sidebar-news-link"><%= link_to news.title, news %></div>
+        <div class="sidebar-news-content"><%= truncate(news.content, :length => 50) %></div>
+    </div>
+  <% end %>
+</div>
+
+<div class="search-wrapper">
+<h2>SEARCH</h2>
+<div class="search-form">
+<%= form_tag result_path, :method => :get do %>
+    <%= text_field_tag :search, params[:search], :placeholder => "Search...", class: "search-input" %>
+    <%= submit_tag "Search", :name => nil, :type => :image, :src => "/img/loop.png", class: "search-loop" %>
+<% end %>
+</div>
+</div>
+
+</div>
