@@ -8,6 +8,24 @@ Midway = ->
   e.css left: "50%"
   t.css top: "50%"
 ready = ->
+  $("#message_form_sender").on "change", ->
+    if @value is "User"
+      $(".contact-form-name").css "display", "block"
+      $(".contact-form-mail").css "display", "block"
+      $(".contact-form-comment").css "display", "block"
+      $(".contact-form-submit").css "display", "block"
+    else if @value is "Company"
+      $(".contact-form-name").css "display", "block"
+      $(".contact-form-mail").css "display", "block"
+      $(".contact-form-position").css "display", "block"
+      $(".contact-form-comment").css "display", "block"
+      $(".contact-form-submit").css "display", "block"
+    else 
+      $(".contact-form-name").css "display", "none"
+      $(".contact-form-mail").css "display", "none"
+      $(".contact-form-position").css "display", "none"
+      $(".contact-form-comment").css "display", "none"
+      $(".contact-form-submit").css "display", "none"
   $(".place-gallery-thumb").click ->
     $("#place-gallery-large-"+this.id).css('display','block')
     $('#map-background').css('opacity','0.5')

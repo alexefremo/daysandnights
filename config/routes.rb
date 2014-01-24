@@ -25,6 +25,8 @@ Daysandnights2::Application.routes.draw do
    
   end
 
+  get 'contact-us' => 'contact#new', :as => 'contacts'
+  post 'contact-us' => 'contact#create'
 
   resources :news
 

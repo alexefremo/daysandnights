@@ -18,13 +18,45 @@
 </div>
 <div>
 <img src="/img/3slide.jpg" />
-<p>We are particularly interested in your opinion so your feedback is appreciated a lot!
-</br>
+<p>We are particularly interested in your opinion so your feedback is appreciated a lot!</p>
 <a href="mailto:daysandnights@hotmail.com">daysandnights@hotmail.com</a>
-</p>
 </div>
 </div>
 
+<%= form_for Message.new, :url => contact_path do |form| %>
+<div class="contact-form">
+
+      <div class="contact-form-sender">
+      <%= form.label "Who are you?" %>
+      <%= form.select :form_sender, options_for_select([['All', 1], ['Co', 2], ['Bought', 3], ['View', 4], ['Top API', 5]], selected: :option )%>
+      </div>
+
+      <div class="contact-form-name">
+      <%= form.label :name %>
+      <%= form.text_field :name %>
+      </div>
+
+      <div class="contact-form-mail">
+      <%= form.label :email %>
+      <%= form.text_field :email %>
+      </div>
+
+      <div class="contact-form-position">
+      <%= form.label :position %>
+      <%= form.text_field :position %>
+      </div>
+
+      <div class="contact-form-comment">  
+      <%= form.label :comment %>
+      <%= form.text_area :comment %>
+      </div>
+
+      <div class="contact-form-submit">    
+      <%= form.submit "Submit" %>
+      </div>
+
+</div>
+<% end %>
 </div>
 
 <div class="sidebar-right-340">

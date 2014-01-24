@@ -1,0 +1,23 @@
+class Message
+
+ extend ActiveModel::Naming
+ include ActiveModel::Conversion
+ include ActiveModel::Validations
+ include ActionView::Helpers::TextHelper
+
+  attr_accessor :name, :email, :position, :comment, :form_sender
+
+  validates :name, :email, :comment, :form_sender, :presence => true
+  validates :email, :format => { :with => %r{.+@.+\..+} }, :allow_blank => true
+  
+  def initialize(attributes = {})
+    attributes.each do |name, value|
+      send("#{name}=", value)
+    end
+  end
+
+  def persisted?
+    false
+  end
+
+end

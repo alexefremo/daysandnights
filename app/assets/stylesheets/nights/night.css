@@ -918,11 +918,11 @@ div[id^="map-wrapper-"] {
   margin: 30px 0;
 }
 
-.owl-item div p a {
+.owl-item div a {
   color: #ae2fb4;
 }
 
-.owl-item div p a:hover {
+.owl-item div a:hover {
   color: #712675;
 }
 
@@ -1043,4 +1043,91 @@ footer {
   margin: auto;
   padding: 0 0 30px 0;
   background: url('/img/dn.png') no-repeat;
+}
+
+.contact-form, .contact-form-sender, .contact-form-name, .contact-form-mail, .contact-form-position, .contact-form-comment, .contact-form-submit {
+  float: left;
+  clear: both;
+}
+
+.contact-form-name, .contact-form-mail, .contact-form-position, .contact-form-comment, .contact-form-submit {
+  display: none;
+}
+
+.contact-form-sender, .contact-form-name, .contact-form-mail, .contact-form-position, .contact-form-comment, .contact-form-submit {
+  margin: 10px 0;
+}
+
+.contact-form-sender select {
+  border-radius: 0;
+  background: white;
+  border: 1px solid white;
+  height: 28px;
+  padding-top: 3px;
+}
+
+.contact-form-name input, .contact-form-mail input, .contact-form-position input, .contact-form-comment textarea {
+  width: 160px;
+  resize: none;
+  color: rgb(51, 51, 51);
+  border-radius: 0;
+  border: 1px solid white;
+  padding: 0 5px;
+}
+
+.contact-form-comment textarea {
+  padding-top: 3px;
+  height: 120px;
+  width: 260px;
+}
+
+.contact-form-name input:focus, .contact-form-mail input:focus, .contact-form-position input:focus, .contact-form-comment textarea:focus {
+  border: 1px solid rgb(174, 47, 180);
+  box-shadow: 0px 0px 10px rgb(174, 47, 180);
+  outline: medium none;
+}
+
+.contact-form-name input, .contact-form-mail input, .contact-form-position input {
+  height: 28px;
+}
+
+.contact-form-submit input {
+  background: rgb(174, 47, 180);
+  color: rgb(255, 255, 255);
+  padding: 5px 10px;
+  border-radius: 5px 5px 5px 5px;
+  border: medium none;
+  cursor: pointer;
+}
+
+.contact-form-submit input:hover {
+  box-shadow: 0px 0px 10px rgb(174, 47, 180);
+}
+
+.contact-form-comment label {
+  vertical-align: top;
+}
+
+.contact-form {
+  margin: 30px 0;
+}
+
+.contact-form-sender label {
+  margin: 0 40px 0 0;
+}
+
+.contact-form-name label {
+  margin: 0 92px 0 0;
+}
+
+.contact-form-mail label {
+  margin: 0 93px 0 0;
+}
+
+.contact-form-position label {
+  margin: 0 77px 0 0;
+}
+
+.contact-form-comment label {
+  margin: 0 67px 0 0;
 }
