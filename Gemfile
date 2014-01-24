@@ -14,6 +14,8 @@ gem 'kaminari'
 gem 'sorted'
 gem 'jquery_datepicker'
 gem "jquery-ui-rails"
+gem 'jquery-modal-rails'
+gem 'lazybox'
 
 group :test do
   gem 'shoulda'

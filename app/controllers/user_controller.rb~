@@ -1,6 +1,6 @@
 class UserController < ApplicationController
-  before_filter :authenticate_user!, only: [:manage, :content, :update, :complete]
-  before_filter :authorize_company, only: [:manage, :content, :update, :complete]
+  before_filter :authenticate_user!, only: [:content, :update, :complete]
+  before_filter :authorize_company, only: [:content, :update, :complete]
   before_filter :authorize_admin, only: [:update, :admin_content, :complete]
 
 
@@ -27,7 +27,7 @@ class UserController < ApplicationController
     @user = User.find_by_profile_name(params[:id])
     Event.where(id: params[:eventid]).update_all(published: 'waiting')
     @events = Event.all
-    redirect_to user_path(current_user.profile_name) 
+    redirect_to_modal user_path(current_user.profile_name) 
   end
 
 
@@ -76,10 +76,6 @@ class UserController < ApplicationController
 
   def update
     @user = User.all
-  end
-
-  def manage
-
   end
 
 

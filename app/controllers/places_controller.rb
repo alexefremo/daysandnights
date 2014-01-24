@@ -49,7 +49,8 @@ class PlacesController < ApplicationController
 
   def query
     @types = PlaceType.find_by_slug!(params[:slug])
-    @places = Place.where(place_type_id: @types.id)
+    @places = Place.where(place_type_id: @types.id).sorted(params[:sort], "created_at DESC").page(params[:page]).per(4)
+    @news = News.all.order("created_at DESC").limit(4)
   end
 
 
@@ -59,6 +60,7 @@ class PlacesController < ApplicationController
     @places = Place.find_by_slug!(params[:id])
     @gallery = PlaceGallery.where(place_id: @places.id)
     @jobs = Job.where(place_id: @places.id)
+    @news = News.all.order("created_at DESC").limit(4)
   end
 
   # GET /places/new

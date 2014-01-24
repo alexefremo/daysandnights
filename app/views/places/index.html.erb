@@ -1,3 +1,6 @@
+<script src='//google-maps-utility-library-v3.googlecode.com/svn/trunk/richmarker/src/richmarker-compiled.js' type='text/javascript'></script>
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCtT4b7ISSx0uBy3pCEiJ1ulQ-NQG4Th_E&sensor=false"></script>
+
 <div class='content-wide'>
 <p id="notice"><%= notice %></p>
 
@@ -5,14 +8,20 @@
 
    <div class="sorting">
      SORT BY
-     <%= link_to_sorted "SUBSCRIBER", :subscribers_count %>
+     <%= link_to_sorted "SUBSCRIBERS", :subscribers_count %>
      <%= link_to_sorted "FEMALE", :subscribers_female, class: 'sort-female' %>
      <%= link_to_sorted "MALE", :subscribers_male, class: 'sort-male' %>
   </div>
 
     <% @places.each do |place| %>
-                
+          
       <div class="place-article">
+     <% @jobs = Job.where(place_id: place.id) %>      
+     <% @jobs.each do |job| %>
+        <% if job.content.length > 5 %>
+           <div class="place-job"></div>
+        <% end %>
+     <% end %>  
         <div class="place-preview"><%= link_to image_tag(place.place_photo(:small)), place %></div>
         <div class="place-article-wrapper">
         <div class="place-title"><%= link_to place.title, place %></div>
@@ -43,14 +52,40 @@
         <%= button_to "subscribe", user_session_path %>
         <% end %>
         </div>
-        <div class="place-gmap">map</div>
+        <div id="<%= place.id %>" class="place-gmap">map</div>
         </div>
+        </div>
+<script type="text/javascript">
+          var readys;
+          readys = function initialize() {
+           var myLatlng = new google.maps.LatLng(<%= place.latitude %>, <%= place.longitude %>); 
+           var mapOptions = {
+              zoom: 16,
+              center: myLatlng
+            };
+            var map = new google.maps.Map(document.getElementById("map-canvas-<%= place.id %>"),
+                mapOptions);
+            var marker = new google.maps.Marker({
+                position: myLatlng,
+                map: map,
+                title: '<%= place.title %>'
+            });
+            };
+
+          
+           $(document).ready(readys);
+           $(document).on('page:load', readys);
+</script>
+        <div id="map-wrapper-<%= place.id %>">
+        <div class="map-title">MAP DISTANCE</div>
+        <div class="map-close">CLOSE</div>
+        <div id="map-canvas-<%= place.id %>"></div>
         </div>
       </div>
   <% end %>
 <%= paginate @places, :window => 1 %>
 </div>
-
+<div id="map-background"> </div>
 <div class="sidebar-right-340">
 <h2>NEWS</h2>
 <div class="sidebar-news-wrapper">

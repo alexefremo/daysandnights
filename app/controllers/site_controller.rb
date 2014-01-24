@@ -13,5 +13,6 @@ class SiteController < ApplicationController
   end
 
   def contact_us
+    @events = Event.all.limit(2)
   end
 end

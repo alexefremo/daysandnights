@@ -1,14 +1,29 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Title:</strong>
-  <%= @news.title %>
-</p>
+<div class='content-wide'>
 
-<p>
-  <strong>Content:</strong>
-  <%= @news.content %>
-</p>
+<h2><%= @news.title %></h2>
 
-<%= link_to 'Edit', edit_news_path(@news) %> |
-<%= link_to 'Back', news_index_path %>
+<div class='news-content'><%= simple_format(@news.content).html_safe %></div>
+
+</div>
+
+<div class="sidebar-right-340">
+<h2>PLACES</h2>
+<div class="sidebar-right-wrapper">
+  <% @places.each do |place| %>
+        <div class="sidebar-right-img"><%= link_to image_tag(place.place_photo(:small)), place %></div>
+  <% end %>
+</div>
+
+<div class="search-wrapper">
+<h2>SEARCH</h2>
+<div class="search-form">
+<%= form_tag result_path, :method => :get do %>
+    <%= text_field_tag :search, params[:search], :placeholder => "Search...", class: "search-input" %>
+    <%= submit_tag "Search", :name => nil, :type => :image, :src => "/img/loop.png", class: "search-loop" %>
+<% end %>
+</div>
+</div>
+
+</div>

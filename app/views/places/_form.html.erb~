@@ -31,9 +31,7 @@
 <div class="jobs">
 
        <%= f.fields_for :jobs do |j| %>
-         <% if j.object.new_record? %> 
            <%= j.text_area :content %>
-         <% end %>
        <% end %>
 
 </div>

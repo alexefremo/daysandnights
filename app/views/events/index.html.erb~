@@ -1,5 +1,5 @@
-<div class='content-wide'>
 <p id="notice"><%= notice %></p>
+<div class='content-wide'>
 
 <h2>EVENTS</h2>
 
@@ -8,7 +8,7 @@
      <%= link_to_sorted "VOTES", :like_count %>
      <%= link_to_sorted "START DATE", :start_date %>
      <%= form_tag events_path, :method => :get, class: "events-search" do %>
-       <%= text_field_tag :search, params[:search], class: "events-search-input" %>
+       <%= text_field_tag :event_search, params[:search], class: "events-search-input" %>
      <% end %>
     </div>
 

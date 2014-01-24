@@ -30,6 +30,7 @@ class NewsController < ApplicationController
   # GET /news/1.json
   def show
     @news = News.find_by_slug!(params[:id])
+    @places = Place.all.limit(2)
   end
 
   # GET /news/new

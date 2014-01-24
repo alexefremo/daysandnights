@@ -10,10 +10,17 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require lazybox
 //= require lolka
+//= require jquery.modal
 //= require jquery.ui.all
 //= require owl.carousel
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree.
+
+$(document).ready(function() {
+  $('a[rel*=lazybox]').lazybox({close: false, modal: false, opacity: 0.5, fixed: true, klass: 'lazybox', speed: 200});
+});
+
 

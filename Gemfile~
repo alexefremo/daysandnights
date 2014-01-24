@@ -12,6 +12,9 @@ gem 'progress_bar'
 gem 'sunspot_solr'
 gem 'kaminari'
 gem 'sorted'
+gem 'jquery_datepicker'
+gem "jquery-ui-rails"
+gem 'jquery-modal-rails'
 
 group :test do
   gem 'shoulda'

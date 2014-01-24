@@ -1,20 +1,16 @@
-    <style>
-      html, body, #map-canvas {
-        height: 300px;
-        width: 300px;
-      }
-    </style>
-
+<div class='content-wide'>
+<p id="notice"><%= notice %></p>
 <script src='//google-maps-utility-library-v3.googlecode.com/svn/trunk/richmarker/src/richmarker-compiled.js' type='text/javascript'></script>
 <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCtT4b7ISSx0uBy3pCEiJ1ulQ-NQG4Th_E&sensor=false"></script>
 <script type="text/javascript">
-          function initialize() {
+          var readys;
+          readys = function initialize() {
            var myLatlng = new google.maps.LatLng(<%= @place.latitude %>, <%= @place.longitude %>); 
            var mapOptions = {
               zoom: 16,
               center: myLatlng
             };
-            var map = new google.maps.Map(document.getElementById("map-canvas"),
+            var map = new google.maps.Map(document.getElementById("map-canvas-<%= @place.id %>"),
                 mapOptions);
             var marker = new google.maps.Marker({
                 position: myLatlng,
@@ -23,73 +19,113 @@
             });
             }
 
-          google.maps.event.addDomListener(window, 'load', initialize);
+           $(document).ready(readys);
+           $(document).on('page:load', readys);
 </script>
-<div id="map-canvas"></div>
-<p id="notice"><%= notice %></p>
 
+<h2><%= @place.title %></h2>
 
+<div class="place-show-image">
+  <%= image_tag @place.place_photo(:large) %>
+</div>
 
-<p>
-  <strong>Photo:</strong>
-  <%= image_tag @place.place_photo(:medium) %>
-</p>
+<div class="place-show-content">
+  <%= simple_format(@place.content).html_safe %>
+</div>
 
-<p>
-  <strong>Title:</strong>
-  <%= @place.title %>
-</p>
-
-<p>
-  <strong>Slug:</strong>
-  <%= @place.slug %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= @place.user_id %>
-</p>
-
-<p>
-  <strong>Place type:</strong>
-  <%= @place.place_type_id %>
-</p>
-
-<p>
-  <strong>Content:</strong>
-  <%= @place.content %>
-</p>
-
-<p>
-  <strong>Address:</strong>
-  <%= @place.address %>
-</p>
-
-<p>
-  <strong>Starts:</strong>
-  <%= @place.mon_start %>
-  <%= @place.mon_end %>
-  <%= @place.tue_start %>
-  <%= @place.tue_end %>
-  <%= @place.wed_start %>
-  <%= @place.wed_end %>
-  <%= @place.thu_start %>
-  <%= @place.thu_end %>
-  <%= @place.fri_start %>
-  <%= @place.fri_end %>
-  <%= @place.sat_start %>
-  <%= @place.sat_end %>
-  <%= @place.sun_start %>
-  <%= @place.sun_end %>
-</p>
-
-<% @gallery.each do |gallery| %>
-  <%= image_tag gallery.image(:medium) %>
-<% end %>
-
+<% @leng = 0 %>
 <% @jobs.each do |job| %>
-  <%= job.content %>
+  <% if job.content.length > 5 %>
+  <% @leng += 1 %>
+<% end %>
+<% end %>
+<% if @leng > 0 %>
+<div class="place-job-offer-show">View Offers</div>
+<div class="place-job-offer">
+<div class="job-offer-title">JOB OFFERS</div><div class="job-offer-close">CLOSE</div>
+<% @jobs.each do |job| %>
+  <% if job.content.length > 5 %>
+    <div class="job-offer"><%= simple_format(job.content).html_safe %></div>
+  <% end %>
+<% end %>
+</div>
 <% end %>
 
-<%= link_to 'Edit', edit_place_path(@place) %> |
-<%= link_to 'Back', places_path %>
+<% if @gallery.count > 0 %>
+<div class="place-gallery">
+<div class="place-gallery-title">Photos</div>
+<div class="customNavigation2">
+  <a class="btn prev"><</a>
+  <a class="btn next">></a>
+</div>
+<div class="owl-carousel2">
+<% @i = 0 %>
+<% @gallery.each do |gallery| %>
+<% @i += 1 %>
+   <div id="<%= @i %>" class="place-gallery-thumb"><%= image_tag gallery.image(:small) %></div>
+<% end %>
+</div>
+<% @i = 0 %>
+<% @gallery.each do |gallery| %>
+<% @i += 1 %>
+  <div id="place-gallery-large-<%= @i %>" class="midway-horizontal midway-vertical"><div class="place-gallery-navigation"><div class="place-gallery-text">Photo</div><div class="place-gallery-current"></div><div class="place-gallery-of"></div><a class="place-gallery-prev"><</a><a class="place-gallery-next">></a><div class="place-gallery-close">CLOSE</div></div>
+ <%= image_tag gallery.image(:large) %></div>
+<% end %>
+</div>
+<% end %>
+
+        <div class="place-subscription-wide">
+        <div class="subscription-male"><%= @place.subscribers_male %></div> 
+        <div class="subscription-female"><%= @place.subscribers_female %></div>
+        <div class="subscribe-button2">
+	<% if user_signed_in? %>
+        <% if current_user.right == 'user' %>
+        <% if Subscription.exists?(user_id: current_user.id, place_id: @place.id) %>
+        <%= button_to "unsubscribe", :controller => :places, 
+                                     :action => 'delid',
+                                     :plid => @place.id,
+                                     :method => :post %>
+
+        <% else %>
+        <%= button_to "subscribe", :controller => :places, 
+                                   :action => 'addid',
+                                   :plid => @place.id,
+                                   :method => :post %>
+        <% end %>
+        <% end %>
+        <% else %>
+        <%= button_to "subscribe", user_session_path %>
+        <% end %>
+        </div>
+        <div id="<%= @place.id %>" class="place-gmap">map</div>
+        </div>
+        <div id="map-wrapper-<%= @place.id %>">
+        <div class="map-title">MAP DISTANCE</div>
+        <div class="map-close">CLOSE</div>
+        <div id="map-canvas-<%= @place.id %>"></div>
+        </div>
+        <div id="map-background"> </div>
+</div>
+
+<div class="sidebar-right-340">
+<h2>NEWS</h2>
+<div class="sidebar-news-wrapper">
+  <% @news.each do |news| %>
+    <div class="sidebar-news">
+        <div class="sidebar-news-link"><%= link_to news.title, news %></div>
+        <div class="sidebar-news-content"><%= truncate(news.content, :length => 50) %></div>
+    </div>
+  <% end %>
+</div>
+
+<div class="search-wrapper">
+<h2>SEARCH</h2>
+<div class="search-form">
+<%= form_tag result_path, :method => :get do %>
+    <%= text_field_tag :search, params[:search], :placeholder => "Search...", class: "search-input" %>
+    <%= submit_tag "Search", :name => nil, :type => :image, :src => "/img/loop.png", class: "search-loop" %>
+<% end %>
+</div>
+</div>
+
+</div>

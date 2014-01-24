@@ -603,7 +603,7 @@ body {
 }
 
 .sorting a:hover {
-  color: #888;  
+  color: white;  
 }
 
 .events-search {
@@ -717,18 +717,33 @@ body {
   cursor: pointer;
 }
 
-.subscribe-button input:hover {
+.subscribe-button2 input {
+  margin: 3px 0 0 170px;
+  border: none;
+  background: none;
+  color: #333;
+  cursor: pointer;
+}
+
+.subscribe-button input:hover, .subscribe-button2 input:hover {
   color: white;
 }
 
 .place-subscription {
   width:370px;
-  margin: 20px 0 0 0;
-  padding: 20px 0 0 0;
+  margin: 30px 0 0 0;
+  padding: 10px 0 0 0;
   border-top: 1px solid #333;
 }
 
-.subscription-male, .subscription-female, .subscribe-button {
+.place-subscription-wide {
+  width:600px;
+  margin: 20px 0 0 0;
+  padding: 40px 0 0 0;
+  border-top: 1px solid #333;  
+}
+
+.subscription-male, .subscription-female, .subscribe-button, .subscribe-button2 {
   color: #333;
   float: left;
 }
@@ -769,6 +784,7 @@ body {
   float:right;
   color: #333;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .place-gmap:hover {
@@ -785,7 +801,7 @@ body {
   background: url('/img/mapgray.png') no-repeat;
 }
 
-.place-gmap:after {
+.place-gmap:after, .map-title:after {
   vertical-align: -5px;
   margin: 0 0 0 5px;
   content: '';
@@ -793,4 +809,239 @@ body {
   width: 22px;
   height: 22px;
   background: url('/img/map.png') no-repeat;
+}
+
+.place-job {
+  width: 102px;
+  height: 102px;
+  background: url('/img/worknight.png') no-repeat;
+  position: absolute;
+  left: 123px;
+  pointer-events:none;
+}
+
+#map-background {
+  top:0;
+  left:0;
+  position:fixed;
+  width:110%;
+  height:110%;
+  background: black;
+  opacity: 0;
+  z-index: -6;
+}
+
+div[id^="map-canvas-"] {
+ top: 0px;
+ left: 3%;
+ height: 80%;
+ width: 94%;
+}
+
+div[id^="map-wrapper-"] {
+  opacity: 0;
+  z-index: -5;
+  position: fixed !important;
+  left: 20%;
+  top: 15%;
+  height: 70%;
+  width: 60%;
+  background: white;
+  border: 10px solid rgba(174, 47, 180, 0.8);
+  border-radius: 20px;
+  background-clip: padding-box;
+}
+
+.map-title {
+  margin: 20px;
+  color: #333;
+  padding: 0 0 10px 0;
+  border-bottom: 1px solid #333;
+}
+
+.map-close {
+  float: right;
+  cursor: pointer;
+  margin: -40px 20px 0 0;
+  color: #333;
+}
+
+.map-close:hover {
+  color: #666;
+}
+
+.place-show-image, .place-show-content, .place-gallery {
+  margin: 30px 0 0 0;
+}
+
+.place-gallery {
+  height: 160px;
+}
+
+.owl-carousel2 {
+  width: 600px;
+  margin: 11px 0 0 0;
+}
+
+.owl-carousel2 .owl-controls {
+  margin: -25px 30px 0px 0px;
+}
+
+.owl-carousel3 {
+  width: 600px;
+  margin: 11px 0 0 0;
+}
+
+.owl-carousel3 .owl-controls {
+  margin: -28px 30px 0px 0px;
+}
+
+.customNavigation2 {
+    float: right;
+    margin: -14px 0px 0px;
+}
+
+.customNavigation2 .next, .customNavigation2 .prev {
+  cursor: pointer;
+  color: #ae2fb4;
+}
+
+.customNavigation2 .next:hover, .customNavigation2 .prev:hover {
+  color: #712675;
+}
+
+.owl-carousel2 .owl-img img {
+  margin: 0 0 0 10px;
+}
+
+.owl-item div p {
+  margin: 30px 0;
+}
+
+.owl-item div p a {
+  margin: 10px 0;
+  color: #ae2fb4;
+}
+
+.owl-item div p a:hover {
+  color: #712675;
+}
+
+.place-gallery-title {
+  color: #ae2fb4;
+  border-bottom: 1px solid #ae2fb4;
+  margin: 30px 0 20px 0;
+  padding: 0 0 10px 0;  
+}
+
+.place-job-offer {
+  position: fixed;
+  width: 60%;
+  height: 70%;
+  top: 15%;
+  left: 20%;
+  background: white;
+  border: 10px solid rgba(174, 47, 180, 0.8);
+  border-radius: 20px;
+  background-clip: padding-box;
+  overflow-y: scroll;
+  z-index: 7;
+  display:none;
+}
+
+.job-offer-title {
+  color: #333;
+  border-bottom: 1px solid #333;
+  margin: 10px 20px 0px 20px;
+  padding: 0 0 10px 0;  
+}
+
+.job-offer-close {
+  color: #333;
+  float: right;
+  margin: -25px 20px 0 0;
+  cursor: pointer;
+}
+
+.job-offer-close:hover {
+  color: #666;
+}
+
+.place-job-offer-show {
+  margin: 30px 0 0 0;
+  cursor: pointer;
+  color: #ae2fb4;
+}
+
+.place-job-offer-show:hover {
+  color: #712675;
+}
+
+.job-offer {
+  color: #333;
+  border-bottom: 1px solid #666;
+  margin: 20px 20px 20px 20px;
+  padding: 0px 0 20px 0;
+}
+
+div[id^="place-gallery-large-"] {
+  color: #333;
+  position: fixed;
+  padding: 20px;
+  background: white;
+  border: 10px solid rgba(174, 47, 180, 0.8);
+  border-radius: 20px;
+  background-clip: padding-box;
+  z-index: 7;
+  display: none;
+}
+
+div[id^="place-gallery-large-"] img {
+  margin: 20px 0 0 0;
+  padding: 20px 0 0 0;
+  border-top: 1px solid #666;
+}
+
+.place-gallery-next, .place-gallery-prev, .place-gallery-text, .place-gallery-current, .place-gallery-of {
+  float: left;
+}
+
+.place-gallery-of:before {
+  content: "/";
+}
+
+.place-gallery-text {
+  margin: 0 10px 0 0;
+}
+
+.place-gallery-prev {
+  margin: 0 5px 0 10px;
+}
+
+.place-gallery-close {
+  float: right;
+}
+
+.place-gallery-next, .place-gallery-prev, .place-gallery-close {
+  cursor: pointer;
+}
+
+footer {
+  clear: both;
+}
+
+.copyright {
+ padding: 30px;
+ margin: auto;
+ width: 150px;
+ font-size: 16px;
+ color: white; 
+}
+
+.logo-footer {
+  width: 145px;
+  height: 50px;
+  margin: auto;
+  padding: 0 0 30px 0;
+  background: url('/img/dn.png') no-repeat;
 }

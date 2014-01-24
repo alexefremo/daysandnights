@@ -1,2 +1,46 @@
-<h1>Site#contact-us</h1>
-<p>Find me in app/views/site/contact-us.html.erb</p>
+<div class='content-wide'>
+<p id="notice"><%= notice %></p>
+
+<h2>CONTACT US</h2>
+
+<div class="customNavigation">
+  <a class="btn prev"><</a>
+  <a class="btn next">></a>
+</div>
+<div class="owl-carousel3">
+<div>
+<img src="/img/1slide.jpg" />
+<p>Welcome to Days and Nights your cozy and fashionable guide in the social life of Rotterdam</p>
+</div>
+<div>
+<img src="/img/2slide.jpg" />
+<p>Our mission is to keep you up to date with all the events that happen in the City and provide you with general information as well</p>
+</div>
+<div>
+<img src="/img/3slide.jpg" />
+<p>We are particularly interested in your opinion so your feedback is appreciated a lot!</p>
+<a href="mailto:daysandnights@hotmail.com">daysandnights@hotmail.com</a>
+</div>
+</div>
+
+</div>
+
+<div class="sidebar-right-340">
+<h2>EVENTS</h2>
+<div class="sidebar-right-wrapper">
+  <% @events.each do |event| %>
+        <div class="sidebar-right-img"><%= link_to image_tag(event.event_photo(:small)), event %></div>
+  <% end %>
+</div>
+
+<div class="search-wrapper">
+<h2>SEARCH</h2>
+<div class="search-form">
+<%= form_tag result_path, :method => :get do %>
+    <%= text_field_tag :search, params[:search], :placeholder => "Search...", class: "search-input" %>
+    <%= submit_tag "Search", :name => nil, :type => :image, :src => "/img/loop.png", class: "search-loop" %>
+<% end %>
+</div>
+</div>
+
+</div>
