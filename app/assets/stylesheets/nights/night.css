@@ -52,6 +52,12 @@ table {
 @font-face {
 }
 
+input {
+  font-family: "PT Sans";
+  margin: 0;
+  padding: 0;
+}
+
 #page {
   width: 1000px;
   margin: auto;
@@ -67,7 +73,7 @@ header {
   height:365px;
 }
 
-.user-link, .login-link, .register-link, .logout-link {
+.user-link, .login-link, .register-link, .logout-link, .user-link a, .login-link a, .register-link a, .logout-link a {
   text-transform: uppercase;
   text-decoration: none;
   font-size:16px;
@@ -138,10 +144,12 @@ header {
 
 .menu > ul > li.active {
   background: #ae2fb4;
+  margin: 0 1px 0 -1px;
 }
 
 .menu > ul > li:hover {
   background: #ae2fb4;
+  margin: 0 1px 0 -1px;
 }
 
 .menu > ul > li:hover > a {
@@ -236,14 +244,6 @@ body {
   z-index: 1;
   background: black;
   opacity: 0.3;
-}
-
-.on {
-  display: block !important;
-}
-
-.off {
-  display: none !important;
 }
 
 .adv {
@@ -413,20 +413,24 @@ body {
   margin: 30px 0;
 }
 
+.search-wrapper-2 {
+  margin: 0;
+}
+
 .search-form {
   margin: 20px 0;
 }
 
 .search-input {
   height:31px;
-  width:200px;
+  width:180px;
   padding: 0 10px;
   border:none;
   background: url('/img/search.png') no-repeat;
 }
 
 .search-loop {
-  margin: 0 0 -5px -50px;
+  margin: 0 0 -5px -30px;
 }
 
 .content-wide {
@@ -458,7 +462,7 @@ body {
   margin: 10px 0 50px 0;
 }
 
-.news-more a {
+.news-more a, .back-link a, .update-rights-button, .create-link input, .login-submit input, .registration-submit input, .reset-submit input {
   border-radius: 4px 4px 4px 4px;
   text-decoration: none;
   padding: 5px 10px;
@@ -466,7 +470,32 @@ body {
   color: white;
 }
 
-.news-more a:hover {
+.create-link input {
+  padding: 5px 7px;
+}
+
+.update-rights-button, .create-link input {
+ cursor: pointer;
+ border: none;
+ margin: 20px 0;
+}
+
+.create-link input {
+  font-size: 16px;
+  float: left;
+  clear: left;
+}
+
+.back-link {
+  margin: 29px 15px;
+  float: left;
+}
+
+.back-link a {
+  padding: 6px 10px;
+}
+
+.news-more a:hover, .back-link a:hover, .create-link input:hover {
   background: #712675;
 }
 
@@ -650,8 +679,9 @@ body {
   text-align: center;
 }
 
-.ui-datepicker .ui-state-highlight {
+.ui-datepicker-today {
   background: #ae2fb4;
+  border: 1px solid rgb(51, 51, 51);
 }
 
 .ui-datepicker-prev {
@@ -678,9 +708,14 @@ body {
   background: #ae2fb4;
 }
 
+.ui-state-disabled:hover {
+  background: black !important;
+}
+
 .ui-datepicker tbody tr td {
   border: 1px solid #333;
   padding:7px 0;
+  text-align: center;
 }
 
 .place-article-wrapper, .place-article, .place-preview, .place-title, .place-content, .place-address, .place-subscription {
@@ -709,23 +744,27 @@ body {
   color: #712657;
 }
 
-.subscribe-button input{
+.subscribe-button a{
   margin: 3px 0 0 60px;
-  border: none;
-  background: none;
   color: #333;
-  cursor: pointer;
+  text-decoration: none;
 }
 
-.subscribe-button2 input {
+.subscribe-button2 a{
   margin: 3px 0 0 170px;
-  border: none;
-  background: none;
   color: #333;
-  cursor: pointer;
+  text-decoration: none;
 }
 
-.subscribe-button input:hover, .subscribe-button2 input:hover {
+.subscription-subscribe-button a {
+  padding: 0;
+  margin: 0;  
+  color: #888;
+  text-decoration: none;
+}
+
+
+.subscribe-button a:hover, .subscribe-button2 a:hover, .subscription-subscribe-button a:hover {
   color: white;
 }
 
@@ -791,7 +830,7 @@ body {
   color: white;
 }
 
-.place-gmap:hover:after {
+.place-gmap:hover:after, .subscription-place-gmap:hover:after  {
   vertical-align: -5px;
   margin: 0 0 0 5px;
   content: '';
@@ -801,7 +840,7 @@ body {
   background: url('/img/mapgray.png') no-repeat;
 }
 
-.place-gmap:after, .map-title:after {
+.place-gmap:after, .map-title:after, .subscription-place-gmap:after {
   vertical-align: -5px;
   margin: 0 0 0 5px;
   content: '';
@@ -809,6 +848,10 @@ body {
   width: 22px;
   height: 22px;
   background: url('/img/map.png') no-repeat;
+}
+
+.subscription-place-gmap {
+  cursor: pointer;
 }
 
 .place-job {
@@ -820,7 +863,7 @@ body {
   pointer-events:none;
 }
 
-#map-background {
+#map-background, .flash-bg {
   top:0;
   left:0;
   position:fixed;
@@ -829,6 +872,15 @@ body {
   background: black;
   opacity: 0;
   z-index: -6;
+}
+
+.alert, .notice {
+  position: fixed;
+  background: white;
+  color: #333;
+  padding: 15px;
+  z-index: 7;
+  opacity: 1;
 }
 
 div[id^="map-canvas-"] {
@@ -1045,7 +1097,7 @@ footer {
   background: url('/img/dn.png') no-repeat;
 }
 
-.contact-form, .contact-form-sender, .contact-form-name, .contact-form-mail, .contact-form-position, .contact-form-comment, .contact-form-submit {
+.contact-form, .contact-form-sender, .contact-form-name, .contact-form-mail, .contact-form-position, .contact-form-comment, .contact-form-submit, .new-content-title, .new-content-category, .new-content-place-type, .new-content-address {
   float: left;
   clear: both;
 }
@@ -1054,37 +1106,143 @@ footer {
   display: none;
 }
 
-.contact-form-sender, .contact-form-name, .contact-form-mail, .contact-form-position, .contact-form-comment, .contact-form-submit {
+.contact-form-sender, .contact-form-name, .contact-form-mail, .contact-form-position, .contact-form-comment, .contact-form-submit, .new-content-title {
   margin: 10px 0;
 }
 
-.contact-form-sender select {
+.contact-form-sender select, .new-content-category select, .new-content-place-type select, div[class^="new-content-work-"] select, .new-content-starts-with-time select, .new-content-location select {
   border-radius: 0;
   background: white;
   border: 1px solid white;
-  height: 28px;
-  padding-top: 3px;
+  height: 30px;
+  padding-top: 5px;
 }
 
-.contact-form-name input, .contact-form-mail input, .contact-form-position input, .contact-form-comment textarea {
+.new-content-category select, .new-content-place-type select, .new-content-location select {
+  width: 172px;
+}
+
+.contact-form-name input, .contact-form-mail input, .contact-form-position input, .contact-form-comment textarea, .new-content-title input, .new-content-url input, .new-content-starts input, .new-content-content textarea, .new-content-address input, .new-content-jobs textarea, .new-content-starts-with-time input, .login-email input, .login-password input, request-password input, .registration-username input, .registration-email input, .registration-password input, .registration-password-confirm input {
   width: 160px;
   resize: none;
   color: rgb(51, 51, 51);
   border-radius: 0;
   border: 1px solid white;
   padding: 0 5px;
+  height: 28px;
 }
 
-.contact-form-comment textarea {
+.login-email input, .login-password input, .request-password input, .registration-username input, .registration-email input, .registration-password input, .registration-password-confirm input {
+  border: 1px solid #333;
+  float: none;
+  width: 240px;
+  clear: both;
+}
+
+.registration-username, .registration-email, .registration-password, .registration-password-confirm, .registration-gender, .request-password {
+  float: left;
+  clear: left;
+  margin: 10px;
+}
+
+.request-password {
+  margin: 10px 0;
+}
+
+.registration-username input, .registration-email input, .registration-password input, .registration-password-confirm input {
+  clear: none;
+}
+
+.new-content-starts-with-time input {
+  width: 70px;
+}
+
+.contact-form-comment textarea, .new-content-content textarea, .new-content-jobs textarea {
   padding-top: 3px;
   height: 120px;
   width: 260px;
 }
 
-.contact-form-name input:focus, .contact-form-mail input:focus, .contact-form-position input:focus, .contact-form-comment textarea:focus {
+.new-content-place-type select, .contact-form-sender select, div[class^="new-content-work-"] select, .new-content-starts-with-time select, .new-content-location select {
+  border: 1px solid white;
+}
+
+.contact-form-name input:focus, .contact-form-mail input:focus, .contact-form-position input:focus, .contact-form-comment textarea:focus, .new-content-title input:focus, .new-content-url input:focus, .new-content-starts input:focus, .new-content-content textarea:focus, .new-content-address input:focus, .new-content-place-type select:focus, .contact-form-sender select:focus, .new-content-work-time select:focus, .new-content-jobs textarea:focus, .new-content-starts-with-time input:focus, .new-content-starts-with-time select:focus, .new-content-location select:focus, div[class^="new-content-work-"] select:focus, .login-email input:focus, .login-password input:focus, .request-password input:focus, .registration-username input:focus, .registration-email input:focus, .registration-password input:focus, .registration-password-confirm input:focus, .search-input:focus {
   border: 1px solid rgb(174, 47, 180);
   box-shadow: 0px 0px 10px rgb(174, 47, 180);
   outline: medium none;
+}
+
+.new-content-fields, .new-content-links {
+  margin: 10px 0;
+}
+
+.new-content-photo, .new-content-title, .new-content-url, .new-content-starts, .new-content-address, .new-content-place-type, .new-content-jobs, .new-content-content, div[class^="new-content-work-"], .new-content-jobs-add, .new-content-jobs-del, .new-content-img-gallery-image, .new-content-img-gallery-image-gallery, .new-content-img-gallery-image-gallery label, .new-content-img-gallery-image-show, .new-content-img-add, .new-content-img-del, .new-content-job-offers-wrapper, .new-content-job-offers-wrapper label, .new-content-starts-with-time, .new-content-location, div[class^="new-content-img-gallery-image-show-wrapper-"]  {
+  float: left;
+  clear: both;
+  margin: 20px 0;
+}
+
+div[class^="new-content-img-gallery-image-show-wrapper-"] {
+  clear: none;
+  margin: 0 10px 0 0;
+}
+
+.new-content-img-gallery-image-show-wrapper-1 {
+  clear: left !important;
+}
+
+.new-content-img-gallery-image-gallery, .new-content-job-offers-wrapper {
+  margin: 0;
+}
+
+.new-content-jobs-del, .new-content-img-del, .new-content-img-add, .new-content-jobs-add {
+  clear: none;
+  margin: 20px;
+}
+
+.registration-gender input {
+  margin: 0 5px 0 0;
+}
+
+#user_gender_female {
+  margin: 0 5px 0 30px;
+}
+
+.request-password label {
+  margin: 0 50px 0 0;
+}
+
+.registration-gender label {
+  margin: 0 98px 0 0;
+}
+
+.registration-username label {
+  margin: 0 80px 0 0;
+}
+
+.registration-email label {
+  margin: 0 46px 0 0;
+}
+
+.registration-password label {
+  margin: 0 83px 0 0;
+}
+
+.registration-password-confirm label {
+  margin: 0 25px 0 0;
+}
+
+.new-content-location label {
+  margin: 0 55px 0 0;
+}
+
+.new-content-starts-with-time label {
+  margin: 0 48px 0 0;
+}
+
+.new-content-job-offers-wrapper label {
+  margin: 20px 26px 20px 0;
 }
 
 .contact-form-name input, .contact-form-mail input, .contact-form-position input {
@@ -1104,12 +1262,89 @@ footer {
   box-shadow: 0px 0px 10px rgb(174, 47, 180);
 }
 
-.contact-form-comment label {
+.contact-form-comment label, .new-content-content label, .new-content-jobs label {
   vertical-align: top;
+}
+
+.new-content-jobs, .new-content-img-gallery-image {
+  display: none;
+}
+
+.new-content-jobs-add, .new-content-jobs-del, .new-content-img-add, .new-content-img-del {
+  color: #ae2fb4;
+  cursor: pointer;
+}
+
+.new-content-jobs-add:hover, .new-content-jobs-del:hover, .new-content-img-add:hover, .new-content-img-del:hover {
+  color: #712657;
 }
 
 .contact-form {
   margin: 30px 0;
+}
+
+.new-content-jobs label {
+  margin: 0 55px 0 0;
+}
+
+.new-content-address label {
+  margin: 0 58px 0 0;
+}
+
+.new-content-place-type label {
+  margin: 0 42px 0 0;
+}
+
+.new-content-work-moday label {
+  margin: 0 50px 0 0;
+}
+
+.new-content-work-tuesday label {
+  margin: 0 50px 0 0;
+}
+
+.new-content-work-wednesday label {
+  margin: 0 28px 0 0;
+}
+
+.new-content-work-thursday label {
+  margin: 0 43px 0 0;
+}
+
+.new-content-work-friday label {
+  margin: 0 65px 0 0;
+}
+
+.new-content-work-saturday label {
+  margin: 0 46px 0 0;
+}
+
+.new-content-work-sunday label {
+  margin: 0 55px 0 0;
+}
+
+.new-content-content label {
+  margin: 0 59px 0 0;
+}
+
+.new-content-category label {
+  margin: 0 52px 0 0;
+}
+
+.new-content-photo label {
+  margin: 0 72px 0 0;
+}
+
+.new-content-title label {
+  margin: 0 82px 0 0;
+}
+
+.new-content-url label {
+  margin: 0 92px 0 0;
+}
+
+.new-content-starts label {
+  margin: 0 72px 0 0;
 }
 
 .contact-form-sender label {
@@ -1130,4 +1365,378 @@ footer {
 
 .contact-form-comment label {
   margin: 0 67px 0 0;
+}
+
+.subscription-head  {
+  margin: 30px 0 0 0;
+  float: left;
+  background: none repeat scroll 0% 0% rgb(51, 51, 51);
+  color: black;
+  padding: 10px 0;
+}
+
+.subscription-body  {
+  float: left;
+  padding: 14px 0 10px 0;
+  color: #888;
+  border-bottom: 1px solid #888;
+}
+
+.subscription-head-title, .subscription-head-type, .subscription-head-male, .subscription-head-female, .subscription-head-address, .subscription-head-status, .subscription-title, .subscription-place-type, .subscription-male-count, .subscription-female-count, .subscription-place-content, .subscription-place-gmap, .subscription-subscribe-button {
+  float: left;
+}
+
+.subscription-head-title, .subscription-title {
+  width: 185px;
+  margin-left: 5px;
+}
+
+.subscription-head-type, .subscription-place-type {
+  width: 90px;
+}
+
+.subscription-head-male, .subscription-head-female, .subscription-head-address, .subscription-male-count, .subscription-female-count, .subscription-place-gmap {
+  width: 75px;
+}
+
+.subscription-head-status, .subscription-subscribe-button {
+  width: 95px;
+}
+
+.subscription-male-count, .subscription-female-count, .subscription-place-gmap {
+  text-align: center;
+}
+
+.subscription-place-content {
+  border-top: 1px solid #888;
+  width: 595px;
+  margin: 14px 0 10px 0;
+  padding: 14px 0 0 5px;
+  display:none;
+}
+
+
+.subscription-head-male:before {
+  vertical-align: -8px;
+  margin: 0 2px 0 0;
+  content: '';
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  background: url('/img/marsrichblack.png') no-repeat;
+}
+
+.subscription-head-female:before {
+  vertical-align: -8px;
+  margin: 0 2px 0 0;
+  content: '';
+  display: inline-block;
+  width: 14px;
+  height: 22px;
+  background: url('/img/venusrichblack.png') no-repeat;
+}
+
+.subscription-title:hover:after {
+  display: inline-block;
+  content: ' ';
+  width: 18px;
+  height: 18px;
+  background: url("/img/button_down.png") no-repeat;
+  vertical-align: -4px;
+  margin: 0 0 0 3px;
+}
+
+.manage-content-wrapper {
+  margin: 20px 0;
+}
+
+.manage-content {
+  width: 240px;
+  margin: 10px 0;
+  padding: 0 0 10px 0;
+  border-bottom: 1px solid #333;
+}
+
+.manage-content a {
+  color: white;
+  text-decoration: none;
+}
+
+.manage-content a:hover {
+  color: #888;
+}
+
+.content-edit:before {
+  display: inline-block;
+  content: ' ';
+  width: 20px;
+  height: 20px;
+  background: url("/img/edit.png") no-repeat;
+  vertical-align: -6px;
+  margin-right: 3px;
+}
+
+.content-delete:before {
+  display: inline-block;
+  content: ' ';
+  width: 20px;
+  height: 20px;
+  background: url("/img/delete.png") no-repeat;
+  vertical-align: -6px;
+  margin-right: 3px;
+
+}
+
+
+.admin-show-content-head-title, .admin-show-content-head-edit-right {
+  margin: 30px 0 0 0;
+  width: 300px;
+  float: left;
+  padding: 10px 0;
+  background: #333;
+  color: black;
+}
+
+.admin-show-content-head-username, .admin-show-content-head-event {
+  margin: 30px 0 0 0;
+  width: 200px;
+  float: left;
+  padding: 10px 0;
+  background: #333;
+  color: black;
+}
+
+.admin-show-content-head-name, .admin-show-content-head-right {
+  margin: 30px 0 0 0;
+  width: 150px;
+  float: left;
+  padding: 10px 0;
+  background: #333;
+  color: black;
+}
+
+.admin-show-content-head-type, .admin-show-content-head-edit, .admin-show-content-head-delete, .admin-show-content-head-status, .admin-show-content-head-action {
+  margin: 30px 0 0 0;
+  width: 100px;
+  float: left;
+  padding: 10px 0;
+  background: #333;
+  color: black;
+}
+
+.admin-content-title, .admin-content-type, .content-edit-link, .content-delete-link, .admin-content-username, .admin-content-event, .admin-content-status, .admin-content-action, .admin-content-name, .admin-content-right, .admin-content-edit-right {
+  color: #888;
+  float: left;
+  padding: 20px 0;
+  border-bottom: 1px solid white;
+}
+
+.content-edit-link, .content-delete-link {
+  padding: 20px 0 16px 0;
+}
+
+.content-edit-link a, .content-delete-link a, .content-edit-link a:hover, .content-delete-link a:hover {
+  color: #888;
+  text-decoration: none;
+}
+
+.admin-content-title, .admin-content-edit-right {
+  width: 300px;
+}
+
+.admin-content-username, .admin-content-event {
+  width: 200px;
+}
+
+.admin-content-name, .admin-content-right {
+  width: 150px;
+}
+
+.admin-content-type, .content-edit-link, .content-delete-link, .admin-content-status, .admin-content-action {
+  width: 100px;
+}
+
+.admin-content-action input {
+    margin: -3px 0;
+    padding: 0;
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+}
+
+.admin-content-name input, .admin-content-right input, .admin-content-edit-right input {
+    margin: 0 3px;
+    padding: 0;
+}
+
+.admin-show-content a {
+  text-decoration: none;
+  color: #888;
+}
+
+.modal {
+  width: 550px;
+  border-radius: 0;
+}
+
+.modal h2 {
+  color: #333;
+  font-size: 30px;
+  text-transform: none;
+  margin: 30px 0 0 0;
+}
+
+.facebook-login-form {
+  width: 250px;
+  float:left;
+}
+
+.login-facebook {
+  margin: 40px 0 0 0;
+  color: #333;
+  font-size: 22px;
+}
+
+.login-with-facebook {
+  color: #666;
+  font-size: 13px;
+  margin: 20px 0 10px 0;
+}
+
+.facebook-login-image {
+  width: 201px;
+  height: 44px;
+}
+
+.standart-login-form {
+  border-left: 1px solid #e7e7e7;
+  width: 299px;
+  float:left;
+}
+
+.login-email label, .login-password label {
+  float:left;
+  margin: 0 0 5px 0;
+}
+
+.login-password label {
+  margin: 25px 0 5px 0;
+}
+
+.login-password {
+  margin: 0 0 0 25px;
+}
+
+.login-email {
+  margin: 40px 0 0 25px;
+}
+
+.login-remember {
+  float: left;
+  margin: 20px 0 20px 25px;
+}
+
+.login-submit input, .registration-submit input, .reset-submit input {
+  margin: 0 0 0 25px;
+  float: left;
+  border: none;
+  cursor: pointer;
+  clear: left;
+}
+
+.reset-submit input {
+  margin: 0;
+}
+
+.registration-submit input {
+  margin: 20px 0;
+}
+
+.forgot-link {
+  width: 274px;
+  float: left;
+  clear: left;
+  border-top: 1px solid #e7e7e7;
+  margin: 20px 0 20px 25px;
+  padding: 20px 0 0 0;  
+}
+
+.forgot-link a{
+  font-size: 12px;
+  color: #333;
+}
+
+.registration input {
+  display: none;
+}
+
+.registration p{
+  float: left;  
+  padding: 10px;
+  color: #ae2fb4;
+  cursor: pointer;
+}
+
+.active-reg {
+  background: #ae2fb4;
+  color: white !important;
+}
+
+
+.registration {
+  border-bottom: 3px solid #ae2fb4;
+  padding: 50px 0 35px 0;
+}
+
+.search-again {
+  margin: 20px 0;
+}
+
+.search-result {
+}
+
+.result-title {
+  float: left;
+  margin: 10px 0;
+  padding: 0 0 10px 0;
+  border-bottom: 1px solid #333;
+  width: 200px;
+}
+
+.result-title a {
+  color: white;
+  text-decoration: none;
+}
+
+.result-content {
+  float: left;
+  margin: 10px 0;
+  padding: 0 0 10px 0;
+  border-bottom: 1px solid #333;
+  width: 400px;
+}
+
+.search-result-head-title {
+  float: left;
+  padding: 10px 0;
+  background: #333;
+  color: black;
+  width: 200px;
+}
+
+.search-result-head-content {
+  float: left;
+  padding: 10px 0;
+  background: #333;
+  color: black;
+  width: 400px;
+}
+
+.subactive {
+  display: block;
+}
+
+.subpassive {
+  display:none;
 }

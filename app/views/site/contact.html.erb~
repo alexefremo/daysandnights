@@ -1,0 +1,77 @@
+<h2>CONTACT US</h2>
+
+<div class="customNavigation">
+  <a class="btn prev"><</a>
+  <a class="btn next">></a>
+</div>
+<div class="owl-carousel3">
+<div>
+<img src="/img/1slide.jpg" />
+<p>Welcome to Days and Nights your cozy and fashionable guide in the social life of Rotterdam</p>
+</div>
+<div>
+<img src="/img/2slide.jpg" />
+<p>Our mission is to keep you up to date with all the events that happen in the City and provide you with general information as well</p>
+</div>
+<div>
+<img src="/img/3slide.jpg" />
+<p>We are particularly interested in your opinion so your feedback is appreciated a lot!</p>
+<a href="mailto:daysandnights@hotmail.com">daysandnights@hotmail.com</a>
+</div>
+</div>
+
+<%= form_for Message.new, :url => contact_path do |form| %>
+<div class="contact-form">
+
+      <div class="contact-form-sender">
+      <%= form.label "Who are you?" %>
+      <%= form.select :form_sender, options_for_select([['User', 'User'], ['Company', 'Company']], selected: :option ), :prompt => "-Select-" %>
+      </div>
+
+      <div class="contact-form-name">
+      <%= form.label :name %>
+      <%= form.text_field :name %>
+      </div>
+
+      <div class="contact-form-mail">
+      <%= form.label :email %>
+      <%= form.text_field :email %>
+      </div>
+
+      <div class="contact-form-position">
+      <%= form.label :position %>
+      <%= form.text_field :position %>
+      </div>
+
+      <div class="contact-form-comment">  
+      <%= form.label :comment %>
+      <%= form.text_area :comment %>
+      </div>
+
+      <div class="contact-form-submit">    
+      <%= form.submit "Submit" %>
+      </div>
+
+</div>
+<% end %>
+</div>
+
+<div class="sidebar-right-340">
+<h2>EVENTS</h2>
+<div class="sidebar-right-wrapper">
+  <% @events.each do |event| %>
+        <div class="sidebar-right-img"><%= link_to image_tag(event.event_photo(:small)), event %></div>
+  <% end %>
+</div>
+
+<div class="search-wrapper">
+<h2>SEARCH</h2>
+<div class="search-form">
+<%= form_tag result_path, :method => :get do %>
+    <%= text_field_tag :search, params[:search], :placeholder => "Search...", class: "search-input" %>
+    <%= submit_tag "Search", :name => nil, :type => :image, :src => "/img/loop.png", class: "search-loop" %>
+<% end %>
+</div>
+</div>
+
+</div>

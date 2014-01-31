@@ -1,23 +1,70 @@
-<h1>User#manage</h1>
-<p>Find me in app/views/user/manage.html.erb</p>
+<div class='content-wide'>
+
+<h2><%= current_user.profile_name %></h2>
+
+<div class="admin-show-content-head">
+<div class="admin-show-content-head-name">Username</div>
+<div class="admin-show-content-head-right">Right</div>
+<div class="admin-show-content-head-edit-right">Edit</div>
+</div>
 
 <%= form_tag complete_user_index_path, :method => :put do %>
 <% if @user %>
+
   <% @user.each do |user| %>
-    <%= user.profile_name %>
-    <%= user.right %>
-    User
+    <div class="admin-content-each">
+    <div class="admin-content-name"><%= user.profile_name %></div>
+    <div class="admin-content-right"><%= user.right %></div>
+    <div class="admin-content-edit-right">
       <%= check_box_tag "complete_users[]", user.id %>
-    Company
+    User
       <%= check_box_tag "complete_companies[]", user.id %>
-    Administrator
+    Company
       <%= check_box_tag "complete_admins[]", user.id %>
-    <% end %>
-    </br>
+    Administrator
+    </div>
+    </div>
   <% end %>
 <% end %>
   <div class="actions">
-       <%= submit_tag 'Update' %>
+       <%= submit_tag 'Update', class: "update-rights-button" %>
   </div>
 <% end %>
+</div>
 
+<div class="sidebar-right-340">
+<div class="sidebar-manage">
+<h2>MANAGE</h2>
+<% if  current_user.right == 'administrator' %>
+<div class="manage-content-wrapper">
+<div class="manage-content"><%= link_to 'Your account', user_path(:id => current_user.profile_name) %></div>
+<div class="manage-content"><%= link_to 'Manage user rights', manage_users_path %></div>
+<div class="manage-content"><%= link_to 'Manage content', manage_content_path %></div>
+<div class="manage-content"><%= link_to 'Add advertises', new_advertise_path %></div>
+<div class="manage-content"><%= link_to 'Add place types', new_place_type_path %></div>
+<div class="manage-content"><%= link_to 'Add news', new_news_path %></div>
+<div class="manage-content"><%= link_to 'Add places', new_place_path %></div>
+<div class="manage-content"><%= link_to 'Add events', new_event_path %></div>
+</div>
+<% end %>
+<% if current_user.right == 'company' %>
+<div class="manage-content-wrapper">
+<div class="manage-content"><%= link_to 'Your account', user_path(:id => current_user.profile_name) %></div>
+<div class="manage-content"><%= link_to 'Manage content', user_path %></div>
+<div class="manage-content"><%= link_to 'Add places', new_place_path %></div>
+<div class="manage-content"><%= link_to 'Add events', new_event_path %></div>
+</div>
+<% end %>
+</div>
+
+<div class="search-wrapper">
+<h2>SEARCH</h2>
+<div class="search-form">
+<%= form_tag result_path, :method => :get do %>
+    <%= text_field_tag :search, params[:search], :placeholder => "Search...", class: "search-input" %>
+    <%= submit_tag "Search", :name => nil, :type => :image, :src => "/img/loop.png", class: "search-loop" %>
+<% end %>
+</div>
+</div>
+
+</div>

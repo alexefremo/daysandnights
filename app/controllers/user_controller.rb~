@@ -27,7 +27,7 @@ class UserController < ApplicationController
     @user = User.find_by_profile_name(params[:id])
     Event.where(id: params[:eventid]).update_all(published: 'waiting')
     @events = Event.all
-    redirect_to_modal user_path(current_user.profile_name) 
+    redirect_to user_path(current_user.profile_name) 
   end
 
 
@@ -55,23 +55,18 @@ class UserController < ApplicationController
     @users = User.all
     @places = Place.all
     @events = Event.all
+    @advertises = Advertise.all
     if user_signed_in?
     @users.each do |usr|
       if usr.id == current_user.id
         @user_name = usr.profile_name
         @user_id = usr.id
+        @user_right = usr.right
       end
     end
     else
     render :file => "/app/views/places/index.html.erb",  :status => 'subscribed'
     end    
-  end
-
-  def admin_content
-    @news = News.all
-    @places = Place.all
-    @events = Event.all
-    @advertises = Advertise.all
   end
 
   def update

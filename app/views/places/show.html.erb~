@@ -1,10 +1,9 @@
 <div class='content-wide'>
-<p id="notice"><%= notice %></p>
 <script src='//google-maps-utility-library-v3.googlecode.com/svn/trunk/richmarker/src/richmarker-compiled.js' type='text/javascript'></script>
 <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCtT4b7ISSx0uBy3pCEiJ1ulQ-NQG4Th_E&sensor=false"></script>
 <script type="text/javascript">
-          var ready;
-          ready = function initialize() {
+          var readysas;
+          readysas = function initialize() {
            var myLatlng = new google.maps.LatLng(<%= @place.latitude %>, <%= @place.longitude %>); 
            var mapOptions = {
               zoom: 16,
@@ -19,8 +18,8 @@
             });
             }
 
-           $(document).ready(ready);
-           $(document).on('page:load', ready);
+           $(document).ready(readysas);
+           $(document).on('page:load', readysas);
 </script>
 
 <h2><%= @place.title %></h2>
@@ -81,16 +80,20 @@
 	<% if user_signed_in? %>
         <% if current_user.right == 'user' %>
         <% if Subscription.exists?(user_id: current_user.id, place_id: @place.id) %>
-        <%= button_to "unsubscribe", :controller => :places, 
+          <%= link_to "unsubscribe",
+ 				     {:controller => :places, 
                                      :action => 'delid',
-                                     :plid => @place.id,
-                                     :method => :post %>
+                                     :plid => @place.id},
+                                     {:class => 'unsub',
+				     :value => @place.id} %>
 
         <% else %>
-        <%= button_to "subscribe", :controller => :places, 
-                                   :action => 'addid',
-                                   :plid => @place.id,
-                                   :method => :post %>
+          <%= link_to "subscribe",
+ 				     {:controller => :places, 
+                                     :action => 'addid',
+                                     :plid => @place.id},
+                                     {:class => 'sub',
+				     :value => @place.id} %>
         <% end %>
         <% end %>
         <% else %>

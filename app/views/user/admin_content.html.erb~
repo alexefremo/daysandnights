@@ -1,48 +1,97 @@
-<h1><%= current_user.profile_name %> User#content</h1>
-<p>Find me in app/views/user/content.html.erb</p>
-  <tbody>
+<div class='content-wide'>
+
+<h2><%= current_user.profile_name %></h2>
+
+<% if current_user.id == @user.id %>
+<% if current_user.right == 'administrator' %>
+<div class="admin-show-content-head">
+<div class="admin-show-content-head-title">Title</div>
+<div class="admin-show-content-head-type">Type</div>
+<div class="admin-show-content-head-edit">Edit</div>
+<div class="admin-show-content-head-delete">Delete</div>
+</div>
+<div class="admin-show-content">
 <% if @news %>
     <% @news.each do |news| %>
-      <tr>
-        <td><%= news.title %></td>
-        <td><%= news.content %></td>
-        <td><%= link_to 'Edit', edit_news_path(news) %></td>
-        <td><%= link_to 'Destroy', news, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    </br>
+        <div class="admin-content-each">
+        <div class="admin-content-title"><%= news.title %></div>
+        <div class="admin-content-type">News</div>
+        <div class="content-edit-link"><%= link_to 'edit', edit_news_path(news), class: 'content-edit' %></div>
+        <div class="content-delete-link"><%= link_to 'delete', news, method: :delete, data: { confirm: 'Are you sure?' }, class: 'content-delete' %></div>
+        </div>
     <% end %>
 <% end %>
+
 <% if @places %>
     <% @places.each do |place| %>
-      <tr>
-        <td><%= place.title %></td>
-        <td><%= place.content %></td>
-        <td><%= link_to 'Edit', edit_place_path(place) %></td>
-        <td><%= link_to 'Destroy', place, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    </br>
+        <div class="admin-content-each">
+        <div class="admin-content-title"><%= place.title %></div>
+        <div class="admin-content-type">Place</div>
+        <div class="content-edit-link"><%= link_to 'edit', edit_place_path(place), class: 'content-edit' %></div>
+        <div class="content-delete-link"><%= link_to 'delete', place, method: :delete, data: { confirm: 'Are you sure?' }, class: 'content-delete' %></div>
+        </div>
    <% end %>
 <% end %>
+
 <% if @events %>
     <% @events.each do |event| %>
-      <tr>
-        <td><%= event.title %></td>
-        <td><%= event.content %></td>
-        <td><%= link_to 'Edit', edit_event_path(event) %></td>
-        <td><%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    </br>
+        <div class="admin-content-each">
+        <div class="admin-content-title"><%= event.title %></div>
+        <div class="admin-content-type">Event</div>
+        <div class="content-edit-link"><%= link_to 'edit', edit_event_path(event), class: 'content-edit' %></div>
+        <div class="content-delete-link"><%= link_to 'delete', event, method: :delete, data: { confirm: 'Are you sure?' }, class: 'content-delete' %></div>
+        </div>
    <% end %>
 <% end %>
+
 <% if @advertises %>
     <% @advertises.each do |adv| %>
-      <tr>
-        <td><%= adv.title %></td>
-        <td><%= link_to 'Edit', edit_advertise_path(adv) %></td>
-        <td><%= link_to 'Destroy', adv, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    </br>
+        <div class="admin-content-each">      
+        <div class="admin-content-title"><%= adv.title %></div>
+        <div class="admin-content-type">Advertise</div>
+        <div class="content-edit-link"><%= link_to 'edit', edit_advertise_path(adv), class: 'content-edit' %></div>
+        <div class="content-delete-link"><%= link_to 'delete', adv, method: :delete, data: { confirm: 'Are you sure?' }, class: 'content-delete' %></div>
+        </div>
    <% end %>
 <% end %>
-  </tbody>
-</table>
+</div>
+<% end %>
+<% end %>
+</div>
+
+<div class="sidebar-right-340">
+<div class="sidebar-manage">
+<h2>MANAGE</h2>
+<% if  current_user.right == 'administrator' %>
+<div class="manage-content-wrapper">
+<div class="manage-content"><%= link_to 'Your account', user_path(:id => current_user.profile_name) %></div>
+<div class="manage-content"><%= link_to 'Manage user rights', manage_users_path %></div>
+<div class="manage-content"><%= link_to 'Manage content', manage_content_path %></div>
+<div class="manage-content"><%= link_to 'Add advertises', new_advertise_path %></div>
+<div class="manage-content"><%= link_to 'Add place types', new_place_type_path %></div>
+<div class="manage-content"><%= link_to 'Add news', new_news_path %></div>
+<div class="manage-content"><%= link_to 'Add places', new_place_path %></div>
+<div class="manage-content"><%= link_to 'Add events', new_event_path %></div>
+</div>
+<% end %>
+<% if current_user.right == 'company' %>
+<div class="manage-content-wrapper">
+<div class="manage-content"><%= link_to 'Your account', user_path(:id => current_user.profile_name) %></div>
+<div class="manage-content"><%= link_to 'Manage content', user_path %></div>
+<div class="manage-content"><%= link_to 'Add places', new_place_path %></div>
+<div class="manage-content"><%= link_to 'Add events', new_event_path %></div>
+</div>
+<% end %>
+</div>
+
+<div class="search-wrapper">
+<h2>SEARCH</h2>
+<div class="search-form">
+<%= form_tag result_path, :method => :get do %>
+    <%= text_field_tag :search, params[:search], :placeholder => "Search...", class: "search-input" %>
+    <%= submit_tag "Search", :name => nil, :type => :image, :src => "/img/loop.png", class: "search-loop" %>
+<% end %>
+</div>
+</div>
+
+</div>

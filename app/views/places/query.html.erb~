@@ -55,8 +55,8 @@
         </div>
         </div>
 <script type="text/javascript">
-          var ready;
-          ready = function initialize() {
+          var readysos;
+          readysos = function initialize() {
            var myLatlng = new google.maps.LatLng(<%= place.latitude %>, <%= place.longitude %>); 
            var mapOptions = {
               zoom: 16,
@@ -72,8 +72,8 @@
             };
 
           
-           $(document).ready(ready);
-           $(document).on('page:load', ready);
+           $(document).ready(readysos);
+           $(document).on('page:load', readysos);
 </script>
         <div id="map-wrapper-<%= place.id %>">
         <div class="map-title">MAP DISTANCE</div>

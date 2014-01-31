@@ -26,7 +26,7 @@ class PlacesController < ApplicationController
     @subscribed.update_attributes(:subscribers_count => Subscription.where(place_id: params[:plid]).count)
     @subscribed.update_attributes(:subscribers_male => Subscription.where(place_id: params[:plid], user_gender: 'male').count)
     @subscribed.update_attributes(:subscribers_female => Subscription.where(place_id: params[:plid], user_gender: 'female').count)
-    redirect_to places_path
+    redirect_to :back
   end
 
   def delid
@@ -36,7 +36,7 @@ class PlacesController < ApplicationController
     @subscribed.update_attributes(:subscribers_male => Subscription.where(place_id: params[:plid], user_gender: 'male').count)
     @subscribed.update_attributes(:subscribers_female => Subscription.where(place_id: params[:plid], user_gender: 'female').count)
     @places = Place.all
-    redirect_to places_path
+    redirect_to :back
   end
 
 

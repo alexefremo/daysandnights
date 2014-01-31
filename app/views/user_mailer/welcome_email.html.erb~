@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Hi, <%= user.profile_name %></h1>
+    <p>
+      We got some new awesome content for you! Check out our website.
+    </p>
+    <p>
+      Just follow this link: <%= @url %>.
+    </p>
+    <p>Have a great day! Your Days&Nights.</p>
+  </body>
+</html>

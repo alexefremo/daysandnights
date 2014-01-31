@@ -2,8 +2,6 @@
 <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCtT4b7ISSx0uBy3pCEiJ1ulQ-NQG4Th_E&sensor=false"></script>
 
 <div class='content-wide'>
-<p id="notice"><%= notice %></p>
-
 <h2>PLACES</h2>
 
    <div class="sorting">
@@ -36,16 +34,20 @@
 	<% if user_signed_in? %>
         <% if current_user.right == 'user' %>
         <% if Subscription.exists?(user_id: current_user.id, place_id: place.id) %>
-        <%= button_to "unsubscribe", :controller => :places, 
+          <%= link_to "unsubscribe",
+ 				     {:controller => :places, 
                                      :action => 'delid',
-                                     :plid => place.id,
-                                     :method => :post %>
+                                     :plid => place.id},
+                                     {:class => 'unsub',
+				     :value => place.id} %>
 
         <% else %>
-        <%= button_to "subscribe", :controller => :places, 
-                                   :action => 'addid',
-                                   :plid => place.id,
-                                   :method => :post %>
+          <%= link_to "subscribe",
+ 				     {:controller => :places, 
+                                     :action => 'addid',
+                                     :plid => place.id},
+                                     {:class => 'sub',
+				     :value => place.id} %>
         <% end %>
         <% end %>
         <% else %>
@@ -56,8 +58,8 @@
         </div>
         </div>
 <script type="text/javascript">
-          var ready;
-          ready = function initialize() {
+          var readys;
+          readys = function initialize() {
            var myLatlng = new google.maps.LatLng(<%= place.latitude %>, <%= place.longitude %>); 
            var mapOptions = {
               zoom: 16,
@@ -73,8 +75,8 @@
             };
 
           
-           $(document).ready(ready);
-           $(document).on('page:load', ready);
+           $(document).ready(readys);
+           $(document).on('page:load', readys);
 </script>
         <div id="map-wrapper-<%= place.id %>">
         <div class="map-title">MAP DISTANCE</div>

@@ -25,15 +25,14 @@ Daysandnights2::Application.routes.draw do
    
   end
 
-  get 'contact-us' => 'contact#new', :as => 'contact'
-  post 'contact-us' => 'contact#create'
-
   resources :news
 
 
-  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
+  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks", :registrations => "registrations" }
   root "site#index"
   get "contact", to: "site#contact_us"
+  get 'contact' => 'contact#new'
+  post 'contact' => 'contact#create'
   get "result", to: "site#result"
 
 

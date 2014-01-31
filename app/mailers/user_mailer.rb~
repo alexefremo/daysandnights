@@ -1,0 +1,9 @@
+class UserMailer < ActionMailer::Base
+  default :from => "contact@daysandnights.nl"
+
+  def welcome_email(user)
+    @user = user
+    @url  = 'http://daysandnights.nl'
+    mail(to: 'alex17021991@gmail.com', subject: 'New event on Days&Nights')
+  end
+end

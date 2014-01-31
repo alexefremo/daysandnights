@@ -50,10 +50,13 @@
 </div>
 
 <div class="sidebar-right-340">
-<h2>PLACES</h2>
-<div class="sidebar-right-wrapper">
-  <% @places.each do |place| %>
-        <div class="sidebar-right-img"><%= link_to image_tag(place.place_photo(:small)), place %></div>
+<h2>NEWS</h2>
+<div class="sidebar-news-wrapper">
+  <% @news.each do |news| %>
+    <div class="sidebar-news">
+        <div class="sidebar-news-link"><%= link_to news.title, news %></div>
+        <div class="sidebar-news-content"><%= truncate(news.content, :length => 50) %></div>
+    </div>
   <% end %>
 </div>
 

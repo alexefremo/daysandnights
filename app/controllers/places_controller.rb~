@@ -26,17 +26,12 @@ class PlacesController < ApplicationController
     @subscribed.update_attributes(:subscribers_count => Subscription.where(place_id: params[:plid]).count)
     @subscribed.update_attributes(:subscribers_male => Subscription.where(place_id: params[:plid], user_gender: 'male').count)
     @subscribed.update_attributes(:subscribers_female => Subscription.where(place_id: params[:plid], user_gender: 'female').count)
-    redirect_to places_path
+    redirect_to :back
   end
 
   def delid
     @lolka = Subscription.where(user_id: current_user.id, place_id: params[:plid]).destroy_all
-    @subscribed = Place.find_by_id(params[:plid])
-    @subscribed.update_attributes(:subscribers_count => Subscription.where(place_id: params[:plid]).count)
-    @subscribed.update_attributes(:subscribers_male => Subscription.where(place_id: params[:plid], user_gender: 'male').count)
-    @subscribed.update_attributes(:subscribers_female => Subscription.where(place_id: params[:plid], user_gender: 'female').count)
-    @places = Place.all
-    redirect_to places_path
+    redirect_to :back
   end
 
 
@@ -45,14 +40,12 @@ class PlacesController < ApplicationController
   def index
     @places = Place.sorted(params[:sort], "created_at DESC").page(params[:page]).per(4) 
     @news = News.all.order("created_at DESC").limit(4)
-    @jobs = Job.where(place_id: @places.id)
   end
 
   def query
     @types = PlaceType.find_by_slug!(params[:slug])
     @places = Place.where(place_type_id: @types.id).sorted(params[:sort], "created_at DESC").page(params[:page]).per(4)
     @news = News.all.order("created_at DESC").limit(4)
-    @jobs = Job.where(place_id: @places.id)
   end
 
 

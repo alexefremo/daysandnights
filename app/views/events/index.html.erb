@@ -1,6 +1,4 @@
 <div class='content-wide'>
-<p id="notice"><%= notice %></p>
-
 <h2>EVENTS</h2>
 
    <div class="sorting">
@@ -8,7 +6,7 @@
      <%= link_to_sorted "VOTES", :like_count %>
      <%= link_to_sorted "START DATE", :start_date %>
      <%= form_tag events_path, :method => :get, class: "events-search" do %>
-       <%= text_field_tag :event_search, params[:search], class: "events-search-input" %>
+       <%= text_field_tag :event_search, params[:event_search], class: "events-search-input" %>
      <% end %>
     </div>
 
@@ -21,7 +19,9 @@
       <div class="event-title"><%= link_to event.title, event %></div>
       <div class="event-content"><%= truncate(event.content, :length => 50) %></div>
       <div class="event-location">Location: <%= link_to event.place.title, event.place %></div>
-      <div class="event-start">Date: <%= event.start_date.strftime("%Y-%m-%d from %H-%M") %> <%= event.end_time.strftime("to %H-%M") %></div>
+      <div class="event-start">Date: <%= event.start_date.strftime("%Y-%m-%d") %> 
+ <%= event.start_time.strftime("from %H-%M") %>
+ <%= event.end_time.strftime("to %H-%M") %></div>
     </div>
 
     <div class="like-dislike-menu">

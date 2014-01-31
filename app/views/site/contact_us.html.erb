@@ -1,6 +1,4 @@
-<div class='content-wide'>
-<p id="notice"><%= notice %></p>
-
+<div class="content-wide">
 <h2>CONTACT US</h2>
 
 <div class="customNavigation">
@@ -63,7 +61,7 @@
 <h2>EVENTS</h2>
 <div class="sidebar-right-wrapper">
   <% @events.each do |event| %>
-        <div class="sidebar-right-img"><%= link_to image_tag(event.event_photo(:small)), event %></div>
+        <div class="sidebar-right-img"><%= link_to image_tag(event.event_photo(:sidebar)), event %></div>
   <% end %>
 </div>
 

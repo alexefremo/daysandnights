@@ -37,7 +37,7 @@ class AdvertisesController < ApplicationController
 
     respond_to do |format|
       if @advertise.save
-        format.html { redirect_to @advertise, notice: 'Advertise was successfully created.' }
+        format.html { redirect_to manage_content_path, notice: 'Advertise was successfully created.' }
         format.json { render action: 'show', status: :created, location: @advertise }
       else
         format.html { render action: 'new' }
@@ -51,7 +51,7 @@ class AdvertisesController < ApplicationController
   def update
     respond_to do |format|
       if @advertise.update(advertise_params)
-        format.html { redirect_to @advertise, notice: 'Advertise was successfully updated.' }
+        format.html { redirect_to manage_content_path, notice: 'Advertise was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -65,7 +65,7 @@ class AdvertisesController < ApplicationController
   def destroy
     @advertise.destroy
     respond_to do |format|
-      format.html { redirect_to advertises_url }
+      format.html { redirect_to manage_content_path }
       format.json { head :no_content }
     end
   end

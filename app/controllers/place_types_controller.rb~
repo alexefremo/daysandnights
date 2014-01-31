@@ -2,7 +2,7 @@ class PlaceTypesController < ApplicationController
   before_action :set_place_type, only: [:show, :edit, :update, :destroy]
   before_filter :authenticate_user!, only: [:new, :edit, :destroy]
 
-  before_filter :authorize_user, only: [:new, :edit, :destroy]
+  before_filter :authorize_user, only: [:show, :new, :edit, :destroy]
   def authorize_user
     unless current_user.right == "administrator" 
       redirect_to root_path, :notice => 'You are not authorized'
@@ -77,6 +77,6 @@ class PlaceTypesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def place_type_params
-      params.require(:place_type).permit(:title, :slug)
+      params.require(:place_type).permit(:title, :slug, :category)
     end
 end

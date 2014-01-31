@@ -2,19 +2,11 @@ class NewsController < ApplicationController
   before_action :set_news, only: [:show, :edit, :update, :destroy]
   before_filter :authenticate_user!, only: [:new, :edit, :destroy]
 
-  before_filter :authorize_user, only: [:new]
-  before_filter :authorize_editor, only: [:edit, :destroy]
+  before_filter :authorize_admin, only: [:show, :edit, :update, :destroy]
 
-  def authorize_user
-    unless current_user.right == "company" or current_user.right == "administrator" 
+  def authorize_admin
+    unless current_user.right == "administrator" 
       redirect_to root_path, :notice => 'You are not authorized'
-    end
-  end
-
-  def authorize_editor
-    @userid = News.find_by_slug!(params[:id]).user_id
-    unless current_user.id == @userid.to_i
-      redirect_to root_path, :notice => "It's not your content"
     end
   end
 
@@ -23,14 +15,14 @@ class NewsController < ApplicationController
   # GET /news.json
   def index
     @news = News.order("created_at").page(params[:page]).per(4)
-    @places = Place.all.limit(2)
+    @places = Place.all.limit(2).order("RANDOM()")
   end
 
   # GET /news/1
   # GET /news/1.json
   def show
     @news = News.find_by_slug!(params[:id])
-    @places = Place.all.limit(2)
+    @places = Place.all.limit(2).order("RANDOM()")
   end
 
   # GET /news/new
@@ -49,7 +41,7 @@ class NewsController < ApplicationController
     @news.user_id = current_user.id
     respond_to do |format|
       if @news.save
-        format.html { redirect_to @news, notice: 'News was successfully created.' }
+        format.html { redirect_to manage_content_path, notice: 'News was successfully created.' }
         format.json { render action: 'show', status: :created, location: @news }
       else
         format.html { render action: 'new' }
@@ -63,7 +55,7 @@ class NewsController < ApplicationController
   def update
     respond_to do |format|
       if @news.update(news_params)
-        format.html { redirect_to @news, notice: 'News was successfully updated.' }
+        format.html { redirect_to manage_content_path, notice: 'News was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -77,7 +69,7 @@ class NewsController < ApplicationController
   def destroy
     @news.destroy
     respond_to do |format|
-      format.html { redirect_to news_index_url }
+      format.html { redirect_to manage_content_path }
       format.json { head :no_content }
     end
   end

@@ -1,7 +1,7 @@
 Name: <%= @message.name %>
 
 Email: <%= @message.email %>
-
-Subject: <%= @message.subject %>
-
-Body: <%= @message.body %>
+<% if @message.position.nil? %>
+Position: <%= @message.position %>
+<% end %>
+Comment: <%= @message.comment %>

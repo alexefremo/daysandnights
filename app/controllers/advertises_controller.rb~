@@ -2,7 +2,7 @@ class AdvertisesController < ApplicationController
   before_action :set_advertise, only: [:show, :edit, :update, :destroy]
   before_filter :authenticate_user!, only: [:new, :edit, :destroy]
 
-  before_filter :authorize_admin, only: [:new, :edit, :destroy]
+  before_filter :authorize_admin, only: [:show, :new, :edit, :destroy]
 
   def authorize_admin
     unless current_user.right == 'administrator'

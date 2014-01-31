@@ -8,19 +8,49 @@ Midway = ->
   e.css left: "50%"
   t.css top: "50%"
 ready = ->
+  $(".new-content-img-add").click ->
+    $("#new-gallery-img-"+$('.new-content-img-add').attr "value").css('display','block')
+    a = parseInt($('.new-content-img-add').attr "value")
+    if a < 9
+      $('.new-content-img-add').attr "value", a+1
+      $('.new-content-img-del').attr "value", a+1     
+  $(".new-content-img-del").click ->
+    $("#new-gallery-img-"+(parseInt($('.new-content-img-del').attr "value")-1)).css('display','none')
+    $("#place_place_galleries_attributes_"+(parseInt($('.new-content-img-del').attr "value")-2)+"_image").val ''
+    a = parseInt($('.new-content-img-del').attr "value")
+    if a > 1 
+      $('.new-content-img-add').attr "value", a-1
+      $('.new-content-img-del').attr "value", a-1     
+  $(".new-content-jobs-add").click ->
+    $("#new-content-job-"+$('.new-content-jobs-add').attr "value").css('display','block')
+    a = parseInt($('.new-content-jobs-add').attr "value")
+    if a < 5
+      $('.new-content-jobs-add').attr "value", a+1
+      $('.new-content-jobs-del').attr "value", a+1     
+  $(".new-content-jobs-del").click ->
+    $("#new-content-job-"+(parseInt($('.new-content-jobs-del').attr "value")-1)).css('display','none')
+    $("#place_jobs_attributes_"+(parseInt($('.new-content-jobs-del').attr "value")-2)+"_content").val ''
+    a = parseInt($('.new-content-jobs-del').attr "value")
+    if a > 1 
+      $('.new-content-jobs-add').attr "value", a-1
+      $('.new-content-jobs-del').attr "value", a-1     
+  $(".subscription-title").click ->
+    $(this).closest('.subscription-body').find('.subscription-place-content').toggle();
+    $(".subscription-title:after").css('background','url("/img/button_right.png") no-repeat')
   $("#message_form_sender").on "change", ->
     if @value is "User"
       $(".contact-form-name").css "display", "block"
       $(".contact-form-mail").css "display", "block"
       $(".contact-form-comment").css "display", "block"
       $(".contact-form-submit").css "display", "block"
-    else if @value is "Company"
+      $(".contact-form-position").css "display", "none"
+    if @value is "Company"
       $(".contact-form-name").css "display", "block"
       $(".contact-form-mail").css "display", "block"
       $(".contact-form-position").css "display", "block"
       $(".contact-form-comment").css "display", "block"
       $(".contact-form-submit").css "display", "block"
-    else 
+    if @value is "" 
       $(".contact-form-name").css "display", "none"
       $(".contact-form-mail").css "display", "none"
       $(".contact-form-position").css "display", "none"
@@ -57,7 +87,13 @@ ready = ->
   $(".place-job-offer-show").click ->
     $(".place-job-offer").css('display','block')
     $('#map-background').css('opacity','0.5')
-    $('#map-background').css('z-index','5')    
+    $('#map-background').css('z-index','5')  
+  $(".subscription-place-gmap").click ->
+    $('#map-wrapper-'+this.id).css('opacity','1')
+    $('#map-background').css('opacity','0.5')
+    $('#map-wrapper-'+this.id).css('z-index','6')
+    $('#map-background').css('z-index','5')
+    $('#map-background').attr "class", $(this).attr "id"  
   $(".place-gmap").click ->
     $('#map-wrapper-'+this.id).css('opacity','1')
     $('#map-background').css('opacity','0.5')
@@ -71,6 +107,20 @@ ready = ->
     $("#place-gallery-large-"+$("#map-background").attr "class").css('display','none')
     $('#map-background').css('z-index','-5')
     $(".place-job-offer").css('display','none')
+  $(".reg-link-hide").click ->
+    $('.flash-bg').css('opacity','0')
+    $('.alert').css('z-index','-6')
+    $(".flash-bg").css('display','none')
+    $('.alert').css('display','none')
+    $('.notice').css('z-index','-6')
+    $('.notice').css('display','none')
+  $(".flash-bg").click ->
+    $('.flash-bg').css('opacity','0')
+    $('.alert').css('z-index','-6')
+    $(".flash-bg").css('display','none')
+    $('.alert').css('display','none')
+    $('.notice').css('z-index','-6')
+    $('.notice').css('display','none')
   $(".place-gallery-close").click ->
     $('#map-background').css('opacity','0')
     $("#place-gallery-large-"+$("#map-background").attr "class").css('display','none')
@@ -86,12 +136,27 @@ ready = ->
     $(".place-job-offer").css('display','none')
   $("#event_search").val ""
   $("#event_search").datepicker
+    minDate: 0
     dateFormat: "yy-mm-dd"
-    yearRange: "c-5:c+0"
+    yearRange: "c-0:c+1"
     prevText: "<<"
     nextText: ">>"
     onSelect: (dateText, inst) ->
       $(".events-search").submit()
+  $("#event_start_date").datepicker
+    minDate: 0
+    dateFormat: "yy-mm-dd"
+    yearRange: "c-0:c+1"
+    prevText: "<<"
+    nextText: ">>"
+    onSelect: (dateText, inst) ->
+  $("#advertise_starts").datepicker
+    minDate: 0
+    dateFormat: "yy-mm-dd"
+    yearRange: "c-0:c+1"
+    prevText: "<<"
+    nextText: ">>"
+    onSelect: (dateText, inst) ->
   $('#login-link').click ->
     $('.sign-window').addClass('on')
     $('.sign-window-back').addClass('on')

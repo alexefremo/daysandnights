@@ -1,17 +1,42 @@
-       <p class="notice"><%= notice %></p>
-       <p class="alert"><%= alert %></p>
-
-
+<div class="content-wide">
 <h2>RESULT</h2>
 
+<div class="search-again">
 <%= form_tag result_path, :method => :get do %>
-    <%= text_field_tag :search, params[:search] %>
-    <%= submit_tag "Search", :name => nil %>
+    <%= text_field_tag :search, params[:search], :placeholder => "Search...", class: "search-input" %>
+    <%= submit_tag "Search", :name => nil, :type => :image, :src => "/img/loop.png", class: "search-loop" %>
 <% end %>
+</div>
 
+<div class="search-result-head">
+  <div class="search-result-head-title">Title</div>
+  <div class="search-result-head-content">Content</div>
+</div>
   <% @result.each do |result| %>
-        <%= link_to result.title, result %>
-        <%= truncate(result.content, :length => 100) %>
+  <div class="search-result">
+        <div class="result-title"><%= link_to result.title, result %></div>
+        <div class="result-content"><%= truncate(result.content, :length => 50) %></div>
+  </div>
   <% end %>
+
+</div>
+
+<div class="sidebar-right-340">
+<h2>EVENTS</h2>
+<div class="sidebar-right-wrapper">
+  <% @events.each do |event| %>
+        <div class="sidebar-right-img"><%= link_to image_tag(event.event_photo(:small)), event %></div>
+  <% end %>
+</div>
+
+<div class="search-wrapper">
+<h2>SEARCH</h2>
+<div class="search-form">
+<%= form_tag result_path, :method => :get do %>
+    <%= text_field_tag :search, params[:search], :placeholder => "Search...", class: "search-input" %>
+    <%= submit_tag "Search", :name => nil, :type => :image, :src => "/img/loop.png", class: "search-loop" %>
+<% end %>
+</div>
+</div>
 
 </div>

@@ -2,7 +2,7 @@ class PlaceTypesController < ApplicationController
   before_action :set_place_type, only: [:show, :edit, :update, :destroy]
   before_filter :authenticate_user!, only: [:new, :edit, :destroy]
 
-  before_filter :authorize_user, only: [:new, :edit, :destroy]
+  before_filter :authorize_user, only: [:show, :new, :edit, :destroy]
   def authorize_user
     unless current_user.right == "administrator" 
       redirect_to root_path, :notice => 'You are not authorized'
@@ -36,7 +36,7 @@ class PlaceTypesController < ApplicationController
 
     respond_to do |format|
       if @place_type.save
-        format.html { redirect_to '/place_types', notice: 'Place type was successfully created.' }
+        format.html { redirect_to manage_content_path, notice: 'Place type was successfully created.' }
         format.json { render action: 'show', status: :created, location: @place_type }
       else
         format.html { render action: 'new' }
@@ -50,7 +50,7 @@ class PlaceTypesController < ApplicationController
   def update
     respond_to do |format|
       if @place_type.update(place_type_params)
-        format.html { redirect_to @place_type, notice: 'Place type was successfully updated.' }
+        format.html { redirect_to manage_content_path, notice: 'Place type was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -64,7 +64,7 @@ class PlaceTypesController < ApplicationController
   def destroy
     @place_type.destroy
     respond_to do |format|
-      format.html { redirect_to place_types_url }
+      format.html { redirect_to manage_content_path }
       format.json { head :no_content }
     end
   end

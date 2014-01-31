@@ -1,0 +1,9 @@
+Name: <%= @message.name %>
+
+Email: <%= @message.email %>
+
+<% if @message.position.nil? %>
+Position: <%= @message.position %>
+<% end %>
+
+Comment: <%= @message.comment %>

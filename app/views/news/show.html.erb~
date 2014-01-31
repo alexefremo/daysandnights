@@ -1,13 +1,8 @@
-<p id="notice"><%= notice %></p>
-
 <div class='content-wide'>
 
 <h2><%= @news.title %></h2>
 
 <div class='news-content'><%= simple_format(@news.content).html_safe %></div>
-
-<div class='news-content'><%= @news.created_at.strftime("from: %Y-%m-%d %H-%M") %></div>
-
 
 </div>
 

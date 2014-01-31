@@ -14,7 +14,7 @@ class Event < ActiveRecord::Base
 
   validates :title, uniqueness: true
 
-  has_attached_file :event_photo, :styles => { :small => "200x200#", :medium => "370x225#", :large => "600x400" },
+  has_attached_file :event_photo, :styles => { :small => "200x200#", :sidebar => "290x150#", :medium => "370x225#", :large => "600x400" },
                   :url  => "/assets/events/:id/:style/:basename.:extension",
                   :path => ":rails_root/public/assets/events/:id/:style/:basename.:extension"
 

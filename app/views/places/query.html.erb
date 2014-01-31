@@ -2,8 +2,6 @@
 <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCtT4b7ISSx0uBy3pCEiJ1ulQ-NQG4Th_E&sensor=false"></script>
 
 <div class='content-wide'>
-<p id="notice"><%= notice %></p>
-
 <h2>PLACES</h2>
 
    <div class="sorting">
@@ -55,8 +53,8 @@
         </div>
         </div>
 <script type="text/javascript">
-          var readys;
-          readys = function initialize() {
+          var readysos;
+          readysos = function initialize() {
            var myLatlng = new google.maps.LatLng(<%= place.latitude %>, <%= place.longitude %>); 
            var mapOptions = {
               zoom: 16,
@@ -72,8 +70,8 @@
             };
 
           
-           $(document).ready(readys);
-           $(document).on('page:load', readys);
+           $(document).ready(readysos);
+           $(document).on('page:load', readysos);
 </script>
         <div id="map-wrapper-<%= place.id %>">
         <div class="map-title">MAP DISTANCE</div>

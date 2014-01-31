@@ -254,4 +254,7 @@ Devise.setup do |config|
   require "omniauth-facebook"
   config.omniauth :facebook, "568917039869505", "385cfb38eeb12a9fd35334ca73c5430f", {:scope => 'email,user_birthday,read_stream', :display => 'popup'}
 
+  config.warden do |manager|
+    manager.failure_app = CustomFailure
+  end
 end

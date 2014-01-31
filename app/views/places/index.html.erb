@@ -2,8 +2,6 @@
 <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCtT4b7ISSx0uBy3pCEiJ1ulQ-NQG4Th_E&sensor=false"></script>
 
 <div class='content-wide'>
-<p id="notice"><%= notice %></p>
-
 <h2>PLACES</h2>
 
    <div class="sorting">
@@ -36,16 +34,33 @@
 	<% if user_signed_in? %>
         <% if current_user.right == 'user' %>
         <% if Subscription.exists?(user_id: current_user.id, place_id: place.id) %>
-        <%= button_to "unsubscribe", :controller => :places, 
+          <%= link_to "unsubscribe",
+ 				     {:controller => :places, 
                                      :action => 'delid',
-                                     :plid => place.id,
-                                     :method => :post %>
+                                     :plid => place.id},
+                                     {:class => 'unsub subactive',
+				     :value => place.id} %>
+          <%= link_to "subscribe",
+ 				     {:controller => :places, 
+                                     :action => 'addid',
+                                     :plid => place.id},
+                                     {:class => 'sub subpassive',
+				     :value => place.id} %>
 
         <% else %>
-        <%= button_to "subscribe", :controller => :places, 
-                                   :action => 'addid',
-                                   :plid => place.id,
-                                   :method => :post %>
+          <%= link_to "subscribe",
+ 				     {:controller => :places, 
+                                     :action => 'addid',
+                                     :plid => place.id},
+                                     {:class => 'sub subactive',
+				     :value => place.id} %>
+          <%= link_to "unsubscribe",
+ 				     {:controller => :places, 
+                                     :action => 'delid',
+                                     :plid => place.id},
+                                     {:class => 'unsub subpassive',
+				     :value => place.id} %>
+
         <% end %>
         <% end %>
         <% else %>

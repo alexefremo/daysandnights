@@ -1,0 +1,15 @@
+ class RegistrationsController < Devise::RegistrationsController
+
+    def create
+      flash[:alert] = "Registration failed. Please, <a class='reg-link-hide' href='/users/sign_up' rel='modal:open'>try again</a>.".html_safe
+      redirect_to :back
+    end
+
+  def new
+    super
+  end
+
+  def update
+    super
+  end
+end

@@ -1,0 +1,14 @@
+class CustomFailure < Devise::FailureApp
+  def redirect_url
+    flash[:alert] = "Login failed. Please, <a class='reg-link-hide' href='/users/sign_in' rel='modal:open'>try again</a>".html_safe
+    redirect_to :back
+  end
+
+  def respond
+    if http_auth?
+      http_auth
+    else
+      redirect_url
+    end
+  end
+end

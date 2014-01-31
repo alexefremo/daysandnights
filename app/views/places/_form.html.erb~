@@ -1,3 +1,7 @@
+<div class='content-wide'>
+
+<h2>New Place</h2>
+
 <%= form_for @place, :html => { :multipart => true} do |f| %>
   <% if @place.errors.any? %>
     <div id="error_explanation">
@@ -11,110 +15,91 @@
     </div>
   <% end %>
 
-<div class="img_gallery">
-
+  <div class="new-content-fields">
+    <div class="new-content-photo"><%= f.label "Photo" %><%= f.file_field :place_photo %></div>
+    <div class="new-content-title"><%= f.label "Title" %><%= f.text_field :title %></div>
+    <div class="new-content-place-type"><%= f.label "Place type" %><%= f.collection_select(:place_type_id, PlaceType.all, :id, :title)  %></div>
+    <div class="new-content-content"><%= f.label "Content" %><%= f.text_area :content %></div>
+    <div class="new-content-address"><%= f.label "Address" %><%= f.text_field :address %></div>
+    <div class="new-content-work-moday"><%= f.label "Monday" %> from: <%= f.time_select :mon_start %> to: <%= f.time_select :mon_end %></div>
+    <div class="new-content-work-tuesday"><%= f.label "Tuesday" %> from: <%= f.time_select :tue_start %> to: <%= f.time_select :tue_end %></div>
+    <div class="new-content-work-wednesday"><%= f.label "Wednesday" %> from: <%= f.time_select :wed_start %> to: <%= f.time_select :wed_end %></div>
+    <div class="new-content-work-thursday"><%= f.label "Thursday" %> from: <%= f.time_select :thu_start %> to: <%= f.time_select :thu_end %></div>
+    <div class="new-content-work-friday"><%= f.label "Friday" %> from: <%= f.time_select :fri_start %> to: <%= f.time_select :fri_end %></div>
+    <div class="new-content-work-saturday"><%= f.label "Saturday" %> from: <%= f.time_select :sat_start %> to: <%= f.time_select :sat_end %></div>
+    <div class="new-content-work-sunday"><%= f.label "Sunday" %> from: <%= f.time_select :sun_start %> to: <%= f.time_select :sun_end %></div>
+    <% @offernum = 0 %><% @gallerynum = 0 %><% @imgnum = 0 %>
+    <div class="new-content-job-offers-wrapper">
+      <%= f.label "Job offers" %>
+      <div class="new-content-jobs-add" value="1">Add a job offer</div>
+      <div class="new-content-jobs-del" value="1">Remove offer</div>
+    <%= f.fields_for :jobs do |j| %>
+      <div class="new-content-jobs" id="new-content-job-<%= @offernum += 1 %>"><%= f.label "Job offer" %><%= j.text_area :content %></div>
+    <% end %>
+    </div>
+    <div class="new-content-img-gallery-image-gallery">
+      <%= f.label "Image gallery" %> 
+      <div class="new-content-img-add" value="1">Add an image</div>
+      <div class="new-content-img-del" value="1">Remove image</div>
        <%= f.fields_for :place_galleries do |pg| %>
          <% if pg.object.new_record? %> 
-           <%= pg.file_field :image %>
+           <div class="new-content-img-gallery-image" id="new-gallery-img-<%= @gallerynum += 1 %>"><%= pg.file_field :image %></div>
          <% end %>
        <% end %>
-
        <%= f.fields_for :place_galleries do |pg| %>
          <% unless pg.object.new_record? %> 
-           <%= link_to(image_tag(pg.object.image.url(:small)), pg.object.image.url(:large))%>
-           <%= pg.check_box :_destroy %>
+          <div class="new-content-img-gallery-image-show-wrapper-<%= @imgnum += 1 %>">
+           <div class="new-content-img-gallery-image-show"><%= link_to(image_tag(pg.object.image.url(:small)), pg.object.image.url(:large))%></div>
+           <div class="new-content-img-gallery-image-delete"><%= pg.check_box :_destroy %> Delete</div>
+          </div>
          <% end %>
        <% end %>
-
-</div>
-
-<div class="jobs">
-
-       <%= f.fields_for :jobs do |j| %>
-           <%= j.text_area :content %>
-       <% end %>
-
-</div>
-
-  <div class="field">
-    <%= f.label :title %><br>
-    <%= f.text_field :title %>
-  </div>
-  <div class="field">
-    <%= f.label :place_photo %><br>
-    <%= f.file_field :place_photo %>
-  </div>
-  <div class="field">
-    <%= f.label :place_type_id %><br>
-    <%= f.collection_select(:place_type_id, PlaceType.all, :id, :title)  %>
-  </div>
-  <div class="field">
-    <%= f.label :content %><br>
-    <%= f.text_area :content %>
-  </div>
-  <div class="field">
-    <%= f.label :address %><br>
-    <%= f.text_field :address %>
-  </div>
-  <div class="field">
-    <%= f.label :mon_start %><br>
-    <%= f.time_select :mon_start %>
-  </div>
-  <div class="field">
-    <%= f.label :mon_end %><br>
-    <%= f.time_select :mon_end %>
-  </div>
-  <div class="field">
-    <%= f.label :tue_start %><br>
-    <%= f.time_select :tue_start %>
-  </div>
-  <div class="field">
-    <%= f.label :tue_end %><br>
-    <%= f.time_select :tue_end %>
-  </div>
-  <div class="field">
-    <%= f.label :wed_start %><br>
-    <%= f.time_select :wed_start %>
-  </div>
-  <div class="field">
-    <%= f.label :wed_end %><br>
-    <%= f.time_select :wed_end %>
-  </div>
-  <div class="field">
-    <%= f.label :thu_start %><br>
-    <%= f.time_select :thu_start %>
-  </div>
-  <div class="field">
-    <%= f.label :thu_end %><br>
-    <%= f.time_select :thu_end %>
-  </div>
-  <div class="field">
-    <%= f.label :fri_start %><br>
-    <%= f.time_select :fri_start %>
-  </div>
-  <div class="field">
-    <%= f.label :fri_end %><br>
-    <%= f.time_select :fri_end %>
-  </div>
-  <div class="field">
-    <%= f.label :sat_start %><br>
-    <%= f.time_select :sat_start %>
-  </div>
-  <div class="field">
-    <%= f.label :sat_end %><br>
-    <%= f.time_select :sat_end %>
-  </div>
-  <div class="field">
-    <%= f.label :sun_start %><br>
-    <%= f.time_select :sun_start %>
-  </div>
-  <div class="field">
-    <%= f.label :sun_end %><br>
-    <%= f.time_select :sun_end %>
+    </div>
   </div>
 
 
-  <div class="actions">
-    <%= f.submit %>
+  <div class="new-content-links">
+    <div class="create-link"><%= f.submit 'Create' %></div>
+    <div class="back-link"><%= link_to 'Back', manage_content_path %></div>
   </div>
 <% end %>
+
+
+</div>
+
+<div class="sidebar-right-340">
+<div class="sidebar-manage">
+<h2>MANAGE</h2>
+<% if  current_user.right == 'administrator' %>
+<div class="manage-content-wrapper">
+<div class="manage-content"><%= link_to 'Your account', user_path(:id => current_user.profile_name) %></div>
+<div class="manage-content"><%= link_to 'Manage user rights', manage_users_path %></div>
+<div class="manage-content"><%= link_to 'Manage content', manage_content_path %></div>
+<div class="manage-content"><%= link_to 'Add advertises', new_advertise_path %></div>
+<div class="manage-content"><%= link_to 'Add place types', new_place_type_path %></div>
+<div class="manage-content"><%= link_to 'Add news', new_news_path %></div>
+<div class="manage-content"><%= link_to 'Add places', new_place_path %></div>
+<div class="manage-content"><%= link_to 'Add events', new_event_path %></div>
+</div>
+<% end %>
+<% if current_user.right == 'company' %>
+<div class="manage-content-wrapper">
+<div class="manage-content"><%= link_to 'Your account', user_path(:id => current_user.profile_name) %></div>
+<div class="manage-content"><%= link_to 'Manage content', user_path %></div>
+<div class="manage-content"><%= link_to 'Add places', new_place_path %></div>
+<div class="manage-content"><%= link_to 'Add events', new_event_path %></div>
+</div>
+<% end %>
+</div>
+
+<div class="search-wrapper">
+<h2>SEARCH</h2>
+<div class="search-form">
+<%= form_tag result_path, :method => :get do %>
+    <%= text_field_tag :search, params[:search], :placeholder => "Search...", class: "search-input" %>
+    <%= submit_tag "Search", :name => nil, :type => :image, :src => "/img/loop.png", class: "search-loop" %>
+<% end %>
+</div>
+</div>
+
+</div>

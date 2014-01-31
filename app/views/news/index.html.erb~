@@ -1,5 +1,4 @@
 <div class='content-wide'>
-<%= link_to_sorted "started at", :created_at %>
     <% @news.each do |news| %>
 <div class='news-article'>
         <div class='news-title'><%= link_to news.title, news %></div>

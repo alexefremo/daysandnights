@@ -16,6 +16,7 @@ gem 'jquery_datepicker'
 gem "jquery-ui-rails"
 gem 'jquery-modal-rails'
 gem 'lazybox'
+gem "js-routes"
 
 group :test do
   gem 'shoulda'

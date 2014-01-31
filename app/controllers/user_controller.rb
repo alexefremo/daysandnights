@@ -44,6 +44,7 @@ class UserController < ApplicationController
     if @user
       @subscriptions = Subscription.where(user_id: @user.id)
       @events = Event.all
+      @places = Place.all.limit(2).order("RANDOM()")
       render action: :subscription
     else
       render file: 'public/404', status: 404, formats: [:html]
@@ -55,23 +56,18 @@ class UserController < ApplicationController
     @users = User.all
     @places = Place.all
     @events = Event.all
+    @advertises = Advertise.all
     if user_signed_in?
     @users.each do |usr|
       if usr.id == current_user.id
         @user_name = usr.profile_name
         @user_id = usr.id
+        @user_right = usr.right
       end
     end
     else
     render :file => "/app/views/places/index.html.erb",  :status => 'subscribed'
     end    
-  end
-
-  def admin_content
-    @news = News.all
-    @places = Place.all
-    @events = Event.all
-    @advertises = Advertise.all
   end
 
   def update

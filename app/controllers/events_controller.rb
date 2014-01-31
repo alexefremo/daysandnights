@@ -42,7 +42,7 @@ class EventsController < ApplicationController
     @search = Sunspot.search Event do 
     fulltext params[:event_search]
     end
-    @events = Event.where(id: @search.results.map(&:id), published: 'published').sorted(params[:sort], "created_at DESC").page(params[:page]).per(4) 
+    @events = Event.where(id: @search.results.map(&:id), published: "published").sorted(params[:sort], "created_at DESC").page(params[:page]).per(4) 
     @news = News.all.order("created_at DESC").limit(4)
   end
 
@@ -71,11 +71,17 @@ class EventsController < ApplicationController
     @event = Event.new(event_params)
     @event.user_id = current_user.id
     @curplace = Place.find_by(id: params[:event][:place_id])
+    @user = User.all
     if current_user.id == @curplace.user_id
       @event.published = 'published'
     else
       @event.published = 'waiting'
     end 
+    @user.each do |user|
+        if Subscription.where(user_id: user.id, place_id: @curplace.id).count > 0 
+          UserMailer.welcome_email(user).deliver
+        end
+    end
     respond_to do |format|
       if @event.save
         format.html { redirect_to @event, notice: 'Event was successfully created.' }
@@ -119,6 +125,6 @@ class EventsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:event).permit(:title, :slug, :user_id, :content, :place_id, :start_date, :end_time, :event_photo, :like_count)
+      params.require(:event).permit(:title, :slug, :user_id, :content, :place_id, :start_date, :start_time, :end_time, :event_photo, :like_count)
     end
 end

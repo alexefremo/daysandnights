@@ -14,7 +14,7 @@
 <h2>PLACES</h2>
 <div class="sidebar-right-wrapper">
   <% @places.each do |place| %>
-        <div class="sidebar-right-img"><%= link_to image_tag(place.place_photo(:small)), place %></div>
+        <div class="sidebar-right-img"><%= link_to image_tag(place.place_photo(:sidebar)), place %></div>
   <% end %>
 </div>
 

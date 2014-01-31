@@ -8,6 +8,7 @@ class CreateEvents < ActiveRecord::Migration
       t.integer :place_id
       t.datetime :start_date
       t.time :end_time
+      t.time :start_time
       t.string :published
       t.integer :like_count, :default => 0
 
