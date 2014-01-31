@@ -246,14 +246,6 @@ body {
   opacity: 0.3;
 }
 
-.on {
-  display: block !important;
-}
-
-.off {
-  display: none !important;
-}
-
 .adv {
   float: left;
   padding: 50px 15px 0 25px;
@@ -1124,6 +1116,13 @@ footer {
   border: 1px solid white;
   height: 30px;
   padding-top: 5px;
+  background: white url('/img/calendardownnight2.png') no-repeat right center;
+  text-indent: 0.01px;
+  text-overflow: "";
+}
+
+div[class^="new-content-work-"] select, .new-content-starts-with-time select {
+  width: 45px;
 }
 
 .new-content-category select, .new-content-place-type select, .new-content-location select {

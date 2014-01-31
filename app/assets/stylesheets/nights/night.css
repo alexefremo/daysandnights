@@ -1116,6 +1116,17 @@ footer {
   border: 1px solid white;
   height: 30px;
   padding-top: 5px;
+  background: white url('/img/calendardownnight2.png') no-repeat right center;
+  text-indent: 0.01px;
+  text-overflow: "";
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none; 
+
+}
+
+div[class^="new-content-work-"] select, .new-content-starts-with-time select {
+  width: 45px;
 }
 
 .new-content-category select, .new-content-place-type select, .new-content-location select {
