@@ -20,7 +20,7 @@
     <div class="new-content-photo"><%= f.label "Photo" %><%= f.file_field :event_photo %></div>
     <div class="new-content-title"><%= f.label "Title" %><%= f.text_field :title %></div>
     <div class="new-content-location"><%= f.label "Location" %><%= f.collection_select(:place_id, @places, :id, :title) %></div>
-    <div class="new-content-starts-with-time"><%= f.label :start_date %><%= f.text_field :start_date %> at: <%= f.time_select :start_time %><div class="select-icon"></div></div>
+    <div class="new-content-starts-with-time"><%= f.label :start_date %><%= f.text_field :start_date %> at: <%= f.time_select :start_time %></div>
     <div class="new-content-work-moday"><%= f.label "End time" %><%= f.time_select :end_time %></div>
   </div>
 

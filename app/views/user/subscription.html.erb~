@@ -4,7 +4,7 @@
 <div class='content-wide'>
 
 <h2><%= @user.profile_name %></h2>
-
+<% if user_signed_in? %>
 <% if current_user.right == 'user' %>
 <% if @subscriptions %>
 
@@ -132,10 +132,12 @@
   <% end %>
 <% end %>
 <% end %>
+<% end %>
 </div>
 
 <div class="sidebar-right-340">
 <div class="sidebar-manage">
+<% if user_signed_in? %>
 <% if current_user.right == 'user' %>
 <h2>PLACES</h2>
 <div class="sidebar-right-wrapper">
@@ -145,6 +147,7 @@
 </div>
 
 <% end %>
+<div class="sidebar-manage">
 <% if  current_user.right == 'administrator' %>
 <h2>MANAGE</h2>
 <div class="manage-content-wrapper">
@@ -166,6 +169,15 @@
 <div class="manage-content"><%= link_to 'Add places', new_place_path %></div>
 <div class="manage-content"><%= link_to 'Add events', new_event_path %></div>
 </div>
+<% end %>
+<% if current_user.right == 'user' %>
+<h2>MANAGE</h2>
+<div class="manage-content-wrapper">
+<div class="manage-content"><%= link_to 'Edit account', edit_user_registration_path %></div>
+</div>
+<% end %>
+</div>
+
 <% end %>
 </div>
 

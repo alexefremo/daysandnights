@@ -1,5 +1,4 @@
 <div class='content-wide'>
-<p id="notice"><%= notice %></p>
 <h2><%= current_user.profile_name %></h2>
 
 <% if current_user.id == @user_id %>
@@ -101,8 +100,8 @@
 
 <div class="sidebar-right-340">
 <div class="sidebar-manage">
-<h2>MANAGE</h2>
 <% if  current_user.right == 'administrator' %>
+<h2>MANAGE</h2>
 <div class="manage-content-wrapper">
 <div class="manage-content"><%= link_to 'Your account', user_path(:id => current_user.profile_name) %></div>
 <div class="manage-content"><%= link_to 'Manage user rights', manage_users_path %></div>
@@ -115,11 +114,18 @@
 </div>
 <% end %>
 <% if current_user.right == 'company' %>
+<h2>MANAGE</h2>
 <div class="manage-content-wrapper">
 <div class="manage-content"><%= link_to 'Your account', user_path(:id => current_user.profile_name) %></div>
 <div class="manage-content"><%= link_to 'Manage content', manage_content_path %></div>
 <div class="manage-content"><%= link_to 'Add places', new_place_path %></div>
 <div class="manage-content"><%= link_to 'Add events', new_event_path %></div>
+</div>
+<% end %>
+<% if current_user.right == 'user' %>
+<h2>MANAGE</h2>
+<div class="manage-content-wrapper">
+<div class="manage-content"><%= link_to 'Edit account', edit_user_registration_path %></div>
 </div>
 <% end %>
 </div>

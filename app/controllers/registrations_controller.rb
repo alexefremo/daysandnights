@@ -24,7 +24,4 @@
     super
   end
 
-  def update
-    super
-  end
 end
