@@ -1772,3 +1772,8 @@ div[class^="new-content-img-gallery-image-show-wrapper-"] {
 .subpassive {
   display:none;
 }
+
+.explain {
+  margin: 10px 0;
+  font-size: 18px;
+}

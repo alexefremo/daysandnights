@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Daysandnights</title>
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <% @hour = Time.now %>
+  <% if @hour.hour > 18 %>
+  <%= stylesheet_link_tag    "application-nights", media: "all" %>
+  <% else if @hour.hour < 7%>
+  <%= stylesheet_link_tag    "application-nights", media: "all" %>
+  <% else %>
+  <%= stylesheet_link_tag    "application-days", media: "all" %>
+  <% end %>
+  <% end %>
+  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<div id="page">
+<header>
+<% if @hour.hour > 18 %>
+<%= link_to image_tag('/img/logo_night.png'), root_path, class: 'logo' %>
+<% else if @hour.hour < 7%>
+<%= link_to image_tag('/img/logo_night.png'), root_path, class: 'logo' %>
+<% else %>
+<%= link_to image_tag('/img/logo_day.png'), root_path, class: 'logo' %>
+<% end %>
+<% end %>
+
+<div class="sign-window-back"></div>
+<div class="login">
+  <% if user_signed_in? %>
+    <%= link_to current_user.profile_name, user_path(current_user.profile_name), class: "user-link" %>
+    <%= link_to "LOG OUT", destroy_user_session_path , method: :delete, class: "logout-link"%>
+  <% else %>
+    <div class="login-link" id="login-link"><%= link_to_modal "LOGIN", new_user_session_path %></div>
+    <div class="register-link" id="register-link"><%= link_to_modal "REGISTER", new_user_registration_path %></div> 
+  <% end %>
+</div>
+</header>
+<nav class="menu">
+    <ul>
+    <li class="<%= 'active' if current_page?(root_path) %>"><%= link_to "Welcome", root_path %></li>
+    <li class="<%= 'active' if current_page?(news_index_path) or (params[:controller]=='news' and params[:action] == 'show') %>"><%= link_to "News", news_index_path %></li>
+    <li class="<%= 'active' if current_page?(places_path) or (params[:controller]=='places' and params[:action] == 'query') or (params[:controller]=='places' and params[:action] == 'show') %>"><%= link_to "Places", places_path %>
+    <ul>
+    <% @types = PlaceType.all %>
+    <% @types.group_by(&:category).each do |category, type| %>
+    <li><%= category %>
+    <ul>
+    <% type.each do |t|%>
+    <li><%= link_to t.title, :controller => '/places', :action => "query", :slug => t.slug %></li>
+    <% end %>
+    </ul></li>
+    <% end %>
+    </ul>
+    </li>
+    <li class="<%= 'active' if current_page?(events_path) or (params[:controller]=='events' and params[:action] == 'show') %>"><%= link_to "Events", events_path %></li>
+    <li class="<%= 'active' if current_page?(contact_path) %>"><%= link_to "About", contact_path %></li>
+    <ul>
+</nav>
+<div id="content">
+  <% if !notice.nil? %>
+    <div class="notice midway-horizontal midway-vertical"><%= notice %></div>
+    <div class="flash-bg" style="z-index: 5; opacity: 0.5;"></div>
+  <% end %>
+  <% if !alert.nil? %>
+    <div class="alert midway-horizontal midway-vertical"><%= alert %></div>
+    <div class="flash-bg" style="z-index: 5; opacity: 0.5;"></div>
+  <% end %>
+<div class='content-wide'>
+    <h2>The page you were looking for doesn't exist.</h2>
+    <div class='explain'>You may have mistyped the address or the page may have moved.</div>
+<div class="search-again">
+<%= form_tag result_path, :method => :get do %>
+    <label>Try to use search:</label>
+    <%= text_field_tag :search, params[:search], :placeholder => "Search...", class: "search-input" %>
+    <%= submit_tag "Search", :name => nil, :type => :image, :src => "/img/loop.png", class: "search-loop" %>
+<% end %>
+</div>
+
+</div>
+
+<div class="sidebar-right-340">
+<div class="sidebar-manage">
+<% if  current_user.right == 'administrator' %>
+<h2>MANAGE</h2>
+<div class="manage-content-wrapper">
+<div class="manage-content"><%= link_to 'Your account', user_path(:id => current_user.profile_name) %></div>
+<div class="manage-content"><%= link_to 'Edit account', edit_user_registration_path %></div>
+<div class="manage-content"><%= link_to 'Manage user rights', manage_users_path %></div>
+<div class="manage-content"><%= link_to 'Manage content', manage_content_path %></div>
+<div class="manage-content"><%= link_to 'Add advertises', new_advertise_path %></div>
+<div class="manage-content"><%= link_to 'Add place types', new_place_type_path %></div>
+<div class="manage-content"><%= link_to 'Add news', new_news_path %></div>
+<div class="manage-content"><%= link_to 'Add places', new_place_path %></div>
+<div class="manage-content"><%= link_to 'Add events', new_event_path %></div>
+</div>
+<% end %>
+<% if current_user.right == 'company' %>
+<h2>MANAGE</h2>
+<div class="manage-content-wrapper">
+<div class="manage-content"><%= link_to 'Your account', user_path(:id => current_user.profile_name) %></div>
+<div class="manage-content"><%= link_to 'Edit account', edit_user_registration_path %></div>
+<div class="manage-content"><%= link_to 'Manage content', manage_content_path %></div>
+<div class="manage-content"><%= link_to 'Add places', new_place_path %></div>
+<div class="manage-content"><%= link_to 'Add events', new_event_path %></div>
+</div>
+<% end %>
+<% if current_user.right == 'user' %>
+<h2>MANAGE</h2>
+<div class="manage-content-wrapper">
+<div class="manage-content"><%= link_to 'Edit account', edit_user_registration_path %></div>
+</div>
+<% end %>
+</div>
+
+<div class="search-wrapper">
+<h2>SEARCH</h2>
+<div class="search-form">
+<%= form_tag result_path, :method => :get do %>
+    <%= text_field_tag :search, params[:search], :placeholder => "Search...", class: "search-input" %>
+    <%= submit_tag "Search", :name => nil, :type => :image, :src => "/img/loop.png", class: "search-loop" %>
+<% end %>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+<footer>
+<div class="copyright">2013 © Days&Nights</div>
+<div class="logo-footer"></div>
+</footer>
+</body>
+</html>

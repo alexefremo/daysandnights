@@ -36,5 +36,7 @@ config.action_mailer.default_url_options = {
   :host => "daysandnights.nl"
 }
 
+config.exceptions_app = self.routes
+
   end
 end

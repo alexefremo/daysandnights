@@ -46,6 +46,12 @@ Daysandnights2::Application.routes.draw do
     post :dislike, :on => :collection
   end
 
+if Rails.env.production?
+   get '404', :to => 'application#404'
+   get '422', :to => 'application#404'
+   get '500', :to => 'application#404'
+end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

@@ -210,7 +210,7 @@ body {
   font-family: 'PT Sans';
   background: url("/img/day.jpg") top no-repeat;
   background-attachment: fixed;
-  background-size:110%;
+  background-size:120%;
 }
 
 #content {
@@ -1773,4 +1773,8 @@ div[class^="new-content-img-gallery-image-show-wrapper-"] {
 
 .subpassive {
   display:none;
+}
+
+.explain {
+  font-size: 18px;
 }

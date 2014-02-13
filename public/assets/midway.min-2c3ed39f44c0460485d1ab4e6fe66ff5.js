@@ -1,0 +1,1 @@
+function Midway(){var i=$(".midway-horizontal"),t=$(".midway-vertical");i.each(function(){$(this).css("marginLeft",-$(this).outerWidth()/2)}),t.each(function(){$(this).css("marginTop",-$(this).outerHeight()/2)}),i.css({left:"50%"}),t.css({top:"50%"})}$(window).on("load",Midway),$(window).on("resize",Midway);

@@ -21,7 +21,16 @@ module Daysandnights2
     # config.i18n.default_locale = :de
 config.autoload_paths += %W(#{config.root}/lib)
 
-
+config.action_mailer.smtp_settings = {
+  :enable_starttls_auto => true,
+  :address              => "smtp.gmail.com",
+  :port                 => 587,
+  :domain               => "daysandnights.nl",
+  :user_name            => "contact@daysandnights.nl",
+  :password             => "daysandnightsuslugi",
+  :authentication       => :plain,
+  :enable_starttls_auto => true
+}
 
 config.action_mailer.default_url_options = {
   :host => "daysandnights.nl"

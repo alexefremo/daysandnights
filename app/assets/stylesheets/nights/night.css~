@@ -1237,6 +1237,10 @@ div[class^="new-content-img-gallery-image-show-wrapper-"] {
   margin: 0 27px 0 0;
 }
 
+.edit-password-confirm input {
+  margin: 20px 0px 0px 152px;
+}
+
 .request-password label {
   margin: 0 50px 0 0;
 }
